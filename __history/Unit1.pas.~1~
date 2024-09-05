@@ -1,0 +1,75 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask,
+  Vcl.DBCtrls, Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormCadBase = class(TForm)
+    Label1: TLabel;
+    DBEdit1: TDBEdit;
+    DBEdit2: TDBEdit;
+    Label2: TLabel;
+    DBEdit3: TDBEdit;
+    Label3: TLabel;
+    DBEdit4: TDBEdit;
+    Label4: TLabel;
+    DBEdit5: TDBEdit;
+    Label5: TLabel;
+    DBEdit6: TDBEdit;
+    Label6: TLabel;
+    ControlBar1: TControlBar;
+    ButtonSalvar: TButton;
+    ButtonCancelar: TButton;
+    ButtonExcluir: TButton;
+    PageControl1: TPageControl;
+    TabSheetConsulta: TTabSheet;
+    TabSheetCadastro: TTabSheet;
+    DBEdit7: TDBEdit;
+    Label7: TLabel;
+    Edit1: TEdit;
+    Button4: TButton;
+    DBGrid1: TDBGrid;
+    ButtonAlterar: TButton;
+    ButtonNovo: TButton;
+    procedure TabSheetConsultaShow(Sender: TObject);
+    procedure TabSheetCadastroShow(Sender: TObject);
+    procedure ButtonCancelarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormCadBase: TFormCadBase;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFormCadBase.ButtonCancelarClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFormCadBase.TabSheetCadastroShow(Sender: TObject);
+begin
+  ButtonNovo.Enabled := False;
+  ButtonAlterar.Enabled := False;
+  ButtonExcluir.Enabled := False;
+  ButtonSalvar.Enabled := True;
+end;
+
+procedure TFormCadBase.TabSheetConsultaShow(Sender: TObject);
+begin
+  ButtonNovo.Enabled := True;
+  ButtonAlterar.Enabled := True;
+  ButtonExcluir.Enabled := True;
+  ButtonSalvar.Enabled := False;
+end;
+
+end.
