@@ -34,6 +34,8 @@ type
     procedure ButtonSalvarClick(Sender: TObject);
     procedure ButtonExcluirClick(Sender: TObject);
     procedure ButtonPesquisarClick(Sender: TObject);
+    procedure ButtonAlterarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     FDMCadbase: TDMCadBase;
   public
@@ -41,6 +43,7 @@ type
     FCamposTabela: String;
     FFiltrosSQL: String;
     procedure AdicionarCampos(_Acampo: String);
+    procedure PrepararPesquisa;
   end;
 
 var
@@ -49,6 +52,12 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TFormCadBase.ButtonAlterarClick(Sender: TObject);
+begin
+  PageControl.ActivePage := TabSheetCadastro;
+  FDMCadbase.CdsCad.Edit;
+end;
 
 procedure TFormCadBase.ButtonCancelarClick(Sender: TObject);
 begin
@@ -59,6 +68,12 @@ begin
   end
   else
     Close;
+end;
+
+procedure TFormCadBase.PrepararPesquisa;
+begin
+  FCamposTabela := '';
+  FFiltrosSQL := '';
 end;
 
 procedure TFormCadBase.ButtonExcluirClick(Sender: TObject);
@@ -88,6 +103,11 @@ begin
 
   PageControl.ActivePage := TabSheetConsulta;
   FDMCadbase.CdsCad.Refresh;
+end;
+
+procedure TFormCadBase.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  DsCad.DataSet := nil;
 end;
 
 procedure TFormCadBase.FormCreate(Sender: TObject);

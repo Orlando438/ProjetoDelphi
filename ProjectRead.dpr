@@ -4,7 +4,8 @@ uses
   Vcl.Forms,
   uFormCadBase in 'Base\uFormCadBase.pas' {FormCadBase},
   uDMCadBase in 'Base\uDMCadBase.pas' {DMCadBase},
-  uFormCadPessoa in 'Cadastro\uFormCadPessoa.pas' {FormCadPessoa};
+  uFormCadPessoa in 'Cadastro\uFormCadPessoa.pas' {FormCadPessoa},
+  uConstante in 'uConstante.pas';
 
 {$R *.res}
 

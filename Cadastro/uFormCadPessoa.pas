@@ -35,6 +35,7 @@ end;
 procedure TFormCadPessoa.FormCreate(Sender: TObject);
 begin
   FTabela := 'PESSOA';
+  PrepararPesquisa;
   inherited;
 end;
 
@@ -46,8 +47,7 @@ end;
 
 procedure TFormCadPessoa.PrepararPesquisa;
 begin
-  FCamposTabela := '';
-  FFiltrosSQL := '';
+  inherited;
   AdicionarCampos('CODIGO');
   AdicionarCampos('NOME');
 end;

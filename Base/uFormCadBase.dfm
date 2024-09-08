@@ -10,6 +10,7 @@ object FormCadBase: TFormCadBase
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  OnClose = FormClose
   OnCreate = FormCreate
   TextHeight = 15
   object PageControl: TPageControl
@@ -150,6 +151,7 @@ object FormCadBase: TFormCadBase
       Caption = 'Alterar'
       DisabledImageName = 'ButtonAlterar'
       TabOrder = 3
+      OnClick = ButtonAlterarClick
     end
     object ButtonNovo: TButton
       Left = 11
