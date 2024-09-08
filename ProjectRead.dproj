@@ -101,6 +101,13 @@
         <DCCReference Include="Base\uFormCadBase.pas">
             <Form>FormCadBase</Form>
         </DCCReference>
+        <DCCReference Include="Base\uDMCadBase.pas">
+            <Form>DMCadBase</Form>
+        </DCCReference>
+        <DCCReference Include="Cadastro\uFormCadPessoa.pas">
+            <Form>FormCadPessoa</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

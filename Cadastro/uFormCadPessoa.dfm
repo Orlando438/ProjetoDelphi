@@ -1,17 +1,25 @@
 inherited FormCadPessoa: TFormCadPessoa
   Caption = 'Cadastro de pessoas'
+  OnShow = FormShow
+  ExplicitTop = 2
   TextHeight = 15
   inherited PageControl: TPageControl
-    Enabled = False
     inherited TabSheetConsulta: TTabSheet
-      Enabled = False
-      inherited Button4: TButton
+      inherited ButtonPesquisar: TButton
         Width = 86
         ExplicitWidth = 86
       end
+      inherited DBGrid1: TDBGrid
+        Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      end
     end
     inherited TabSheetCadastro: TTabSheet
-      Enabled = False
+      inherited DBEditDescricao: TDBEdit
+        DataField = 'Nome'
+      end
+      inherited DBEditCodigo: TDBEdit
+        DataField = 'Codigo'
+      end
     end
   end
 end

@@ -26,21 +26,24 @@ object FormCadBase: TFormCadBase
       Caption = 'Consulta'
       ImageName = 'TabSheetConsulta'
       OnShow = TabSheetConsultaShow
-      object Edit1: TEdit
+      object EditPesquisa: TEdit
         Left = 0
         Top = 16
         Width = 520
         Height = 23
+        ImeName = 'EditPesquisa'
         TabOrder = 0
       end
-      object Button4: TButton
+      object ButtonPesquisar: TButton
         Left = 526
         Top = 14
         Width = 91
         Height = 25
         Cancel = True
         Caption = 'Pesquisar'
+        DisabledImageName = 'ButtonPesquisar'
         TabOrder = 1
+        OnClick = ButtonPesquisarClick
       end
       object DBGrid1: TDBGrid
         Left = 0
@@ -48,7 +51,8 @@ object FormCadBase: TFormCadBase
         Width = 620
         Height = 330
         Align = alBottom
-        Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+        DataSource = DsCad
+        Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
         TabOrder = 2
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -82,6 +86,7 @@ object FormCadBase: TFormCadBase
         Top = 45
         Width = 225
         Height = 23
+        DataSource = DsCad
         TabOrder = 0
       end
       object DBEditCodigo: TDBEdit
@@ -89,6 +94,7 @@ object FormCadBase: TFormCadBase
         Top = 16
         Width = 72
         Height = 23
+        DataSource = DsCad
         Enabled = False
         TabOrder = 1
       end
@@ -111,6 +117,7 @@ object FormCadBase: TFormCadBase
       Cancel = True
       Caption = 'Salvar'
       TabOrder = 0
+      OnClick = ButtonSalvarClick
     end
     object ButtonCancelar: TButton
       Left = 451
@@ -132,6 +139,7 @@ object FormCadBase: TFormCadBase
       Caption = 'Excluir'
       DisabledImageName = 'Button'
       TabOrder = 2
+      OnClick = ButtonExcluirClick
     end
     object ButtonAlterar: TButton
       Left = 110
@@ -154,5 +162,9 @@ object FormCadBase: TFormCadBase
       TabOrder = 4
       OnClick = ButtonNovoClick
     end
+  end
+  object DsCad: TDataSource
+    Left = 436
+    Top = 62
   end
 end
