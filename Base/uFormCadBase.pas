@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask,
-  Vcl.DBCtrls, Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, uDMCadBase;
+  Vcl.DBCtrls, Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, uDMCadBase, System.StrUtils;
 
 type
   TFormCadBase = class(TForm)
@@ -34,16 +34,19 @@ type
     procedure ButtonSalvarClick(Sender: TObject);
     procedure ButtonExcluirClick(Sender: TObject);
     procedure ButtonPesquisarClick(Sender: TObject);
-    procedure ButtonAlterarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure ButtonAlterarClick(Sender: TObject);
   private
     FDMCadbase: TDMCadBase;
+    procedure Alterar;
   public
     FTabela: String;
     FCamposTabela: String;
     FFiltrosSQL: String;
     procedure AdicionarCampos(_Acampo: String);
-    procedure PrepararPesquisa;
+    procedure AdicionarFiltros(_ACampo: String);
+    procedure Pesquisar;
   end;
 
 var
@@ -53,10 +56,15 @@ implementation
 
 {$R *.dfm}
 
-procedure TFormCadBase.ButtonAlterarClick(Sender: TObject);
+procedure TFormCadBase.Alterar;
 begin
   PageControl.ActivePage := TabSheetCadastro;
   FDMCadbase.CdsCad.Edit;
+end;
+
+procedure TFormCadBase.ButtonAlterarClick(Sender: TObject);
+begin
+  Alterar;
 end;
 
 procedure TFormCadBase.ButtonCancelarClick(Sender: TObject);
@@ -68,12 +76,6 @@ begin
   end
   else
     Close;
-end;
-
-procedure TFormCadBase.PrepararPesquisa;
-begin
-  FCamposTabela := '';
-  FFiltrosSQL := '';
 end;
 
 procedure TFormCadBase.ButtonExcluirClick(Sender: TObject);
@@ -91,6 +93,11 @@ end;
 
 procedure TFormCadBase.ButtonPesquisarClick(Sender: TObject);
 begin
+  Pesquisar;
+end;
+
+procedure TFormCadBase.Pesquisar;
+begin
   FDMCadbase.DataModuleCreate(FTabela, FCamposTabela, FFiltrosSQL);
   FDMCadbase.CdsCad.Refresh;
   FFiltrosSQL := '';
@@ -105,6 +112,11 @@ begin
   FDMCadbase.CdsCad.Refresh;
 end;
 
+procedure TFormCadBase.DBGrid1DblClick(Sender: TObject);
+begin
+  Alterar;
+end;
+
 procedure TFormCadBase.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   DsCad.DataSet := nil;
@@ -112,7 +124,6 @@ end;
 
 procedure TFormCadBase.FormCreate(Sender: TObject);
 begin
-  FFiltrosSQL := '';
   TabSheetCadastro.TabVisible := False;
   TabSheetConsulta.TabVisible := False;
 
@@ -120,6 +131,7 @@ begin
   FDMCadbase := TDMCadBase.Create(nil);
   FDMCadbase.DataModuleCreate(FTabela, FCamposTabela);
   DsCad.DataSet := FDMCadbase.CdsCad;
+  pesquisar;
 end;
 
 procedure TFormCadBase.AdicionarCampos(_Acampo: String);
@@ -128,13 +140,15 @@ begin
     FCamposTabela := _Acampo
   else
     FCamposTabela := FCamposTabela + ', ' + _Acampo;
-
-  if (FFiltrosSQL = EmptyStr) then
-    FFiltrosSQL := ' AND ' + _Acampo +  '::TEXT LIKE ' + QuotedStr('%'+ EditPesquisa.text +'%')
-  else
-    FFiltrosSQL := FFiltrosSQL + ' OR ' + _Acampo + '::TEXT LIKE ' + QuotedStr('%'+ EditPesquisa.text +'%');
 end;
 
+procedure TFormCadBase.AdicionarFiltros(_ACampo: String);
+begin
+  if (FFiltrosSQL = EmptyStr) then
+    FFiltrosSQL := ' AND LOWER(' + _ACampo + '::TEXT) LIKE ' + QuotedStr('%' + LowerCase(EditPesquisa.Text) + '%')
+  else
+    FFiltrosSQL := FFiltrosSQL + ' OR LOWER(' + _ACampo + '::TEXT) LIKE ' + QuotedStr('%' + LowerCase(EditPesquisa.Text) + '%');
+end;
 
 procedure TFormCadBase.TabSheetCadastroShow(Sender: TObject);
 begin

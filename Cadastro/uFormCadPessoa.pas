@@ -13,7 +13,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure ButtonPesquisarClick(Sender: TObject);
   private
-    procedure PrepararPesquisa;
   public
     { Public declarations }
   end;
@@ -27,7 +26,8 @@ implementation
 
 procedure TFormCadPessoa.ButtonPesquisarClick(Sender: TObject);
 begin
-  PrepararPesquisa;
+  adicionarfiltros('CODIGO');
+  adicionarfiltros('NOME');
   inherited;
 end;
 
@@ -36,13 +36,6 @@ begin
   FTabela := 'PESSOA';
   FCamposTabela := 'CODIGO, NOME';
   inherited;
-end;
-
-procedure TFormCadPessoa.PrepararPesquisa;
-begin
-  inherited;
-  adicionarfiltros('CODIGO');
-  adicionarfiltros('NOME');
 end;
 
 end.

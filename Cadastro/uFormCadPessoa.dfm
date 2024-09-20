@@ -9,6 +9,18 @@ inherited FormCadPessoa: TFormCadPessoa
       end
       inherited DBGrid1: TDBGrid
         Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'Codigo'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Nome'
+            Width = 200
+            Visible = True
+          end>
       end
     end
     inherited TabSheetCadastro: TTabSheet
