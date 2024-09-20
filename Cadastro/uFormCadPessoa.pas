@@ -11,7 +11,6 @@ uses
 type
   TFormCadPessoa = class(TFormCadBase)
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure ButtonPesquisarClick(Sender: TObject);
   private
     procedure PrepararPesquisa;
@@ -35,21 +34,15 @@ end;
 procedure TFormCadPessoa.FormCreate(Sender: TObject);
 begin
   FTabela := 'PESSOA';
-  PrepararPesquisa;
+  FCamposTabela := 'CODIGO, NOME';
   inherited;
-end;
-
-procedure TFormCadPessoa.FormShow(Sender: TObject);
-begin
-  inherited;
-  PrepararPesquisa;
 end;
 
 procedure TFormCadPessoa.PrepararPesquisa;
 begin
   inherited;
-  AdicionarCampos('CODIGO');
-  AdicionarCampos('NOME');
+  adicionarfiltros('CODIGO');
+  adicionarfiltros('NOME');
 end;
 
 end.

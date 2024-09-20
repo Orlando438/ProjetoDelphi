@@ -1,6 +1,5 @@
 inherited FormCadPessoa: TFormCadPessoa
   Caption = 'Cadastro de pessoas'
-  OnShow = FormShow
   TextHeight = 15
   inherited PageControl: TPageControl
     inherited TabSheetConsulta: TTabSheet
