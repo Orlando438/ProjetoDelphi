@@ -145,9 +145,9 @@ end;
 procedure TFormCadBase.AdicionarFiltros(_ACampo: String);
 begin
   if (FFiltrosSQL = EmptyStr) then
-    FFiltrosSQL := ' AND LOWER(' + _ACampo + '::TEXT) LIKE ' + QuotedStr('%' + LowerCase(EditPesquisa.Text) + '%')
+    FFiltrosSQL := ' AND LOWER(' + _ACampo + '::TEXT) LIKE ' + QuotedStr('%' + EditPesquisa.Text + '%')
   else
-    FFiltrosSQL := FFiltrosSQL + ' OR LOWER(' + _ACampo + '::TEXT) LIKE ' + QuotedStr('%' + LowerCase(EditPesquisa.Text) + '%');
+    FFiltrosSQL := FFiltrosSQL + ' OR LOWER(' + _ACampo + '::TEXT) LIKE ' + QuotedStr('%' + EditPesquisa.Text + '%') ;
 end;
 
 procedure TFormCadBase.TabSheetCadastroShow(Sender: TObject);
