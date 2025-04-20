@@ -2,8 +2,8 @@ object FormCadBase: TFormCadBase
   Left = 0
   Top = 0
   Caption = 'FormCadBase'
-  ClientHeight = 442
-  ClientWidth = 628
+  ClientHeight = 460
+  ClientWidth = 629
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,13 +16,13 @@ object FormCadBase: TFormCadBase
   object PageControl: TPageControl
     Left = 0
     Top = 0
-    Width = 628
-    Height = 408
+    Width = 629
+    Height = 426
     ActivePage = TabSheetConsulta
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 624
-    ExplicitHeight = 407
+    ExplicitWidth = 625
+    ExplicitHeight = 425
     object TabSheetConsulta: TTabSheet
       Caption = 'Consulta'
       ImageName = 'TabSheetConsulta'
@@ -34,6 +34,7 @@ object FormCadBase: TFormCadBase
         Height = 23
         ImeName = 'EditPesquisa'
         TabOrder = 0
+        OnEnter = EditPesquisaEnter
       end
       object ButtonPesquisar: TButton
         Left = 526
@@ -48,8 +49,8 @@ object FormCadBase: TFormCadBase
       end
       object DBGrid1: TDBGrid
         Left = 0
-        Top = 48
-        Width = 620
+        Top = 66
+        Width = 621
         Height = 330
         Align = alBottom
         DataSource = DsCad
@@ -104,15 +105,15 @@ object FormCadBase: TFormCadBase
   end
   object ControlBar1: TControlBar
     Left = 0
-    Top = 408
-    Width = 628
+    Top = 426
+    Width = 629
     Height = 34
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 407
-    ExplicitWidth = 624
+    ExplicitTop = 425
+    ExplicitWidth = 625
     object ButtonSalvar: TButton
-      Left = 539
+      Left = 533
       Top = 2
       Width = 75
       Height = 22
@@ -122,7 +123,7 @@ object FormCadBase: TFormCadBase
       OnClick = ButtonSalvarClick
     end
     object ButtonCancelar: TButton
-      Left = 451
+      Left = 445
       Top = 2
       Width = 75
       Height = 22

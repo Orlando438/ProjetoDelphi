@@ -1,5 +1,5 @@
-inherited FormCadPessoa: TFormCadPessoa
-  Caption = 'Cadastro de pessoas'
+inherited FormCadCarro: TFormCadCarro
+  Caption = 'Cadastro de carro'
   ClientWidth = 628
   ExplicitWidth = 640
   TextHeight = 15
@@ -8,25 +8,27 @@ inherited FormCadPessoa: TFormCadPessoa
     ExplicitWidth = 624
     inherited TabSheetConsulta: TTabSheet
       ExplicitWidth = 620
-      inherited ButtonPesquisar: TButton
-        Width = 86
-        ExplicitWidth = 86
-      end
       inherited DBGrid1: TDBGrid
         Width = 620
-        Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
         Columns = <
           item
             Expanded = False
-            FieldName = 'CDPESSOA'
+            FieldName = 'CDCARRO'
             Title.Caption = 'C'#243'digo'
             Visible = True
           end
           item
             Expanded = False
-            FieldName = 'DSNOME'
-            Title.Caption = 'Nome'
-            Width = 200
+            FieldName = 'DSCARRO'
+            Title.Caption = 'Modelo'
+            Width = 120
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ANOLANCAMENTO'
+            Title.Caption = 'Ano lan'#231'amento'
+            Width = 100
             Visible = True
           end>
       end
@@ -34,10 +36,10 @@ inherited FormCadPessoa: TFormCadPessoa
     inherited TabSheetCadastro: TTabSheet
       ExplicitWidth = 620
       inherited DBEditDescricao: TDBEdit
-        DataField = 'DSNOME'
+        DataField = 'DSCARRO'
       end
       inherited DBEditCodigo: TDBEdit
-        DataField = 'CDPESSOA'
+        DataField = 'CDCARRO'
       end
     end
   end

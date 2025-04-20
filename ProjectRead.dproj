@@ -108,6 +108,19 @@
             <Form>FormCadPessoa</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uConstante.pas"/>
+        <DCCReference Include="uFormMenu.pas">
+            <Form>FormMenu</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Cadastro\uFormCadCarro.pas">
+            <Form>FormCadCarro</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Cadastro\uFormCadVenda.pas">
+            <Form>FormCadVenda</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

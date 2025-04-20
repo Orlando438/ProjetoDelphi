@@ -26,15 +26,16 @@ implementation
 
 procedure TFormCadPessoa.ButtonPesquisarClick(Sender: TObject);
 begin
-  adicionarfiltros('CODIGO');
-  adicionarfiltros('NOME');
+  FFiltrosSQL := '';
+  adicionarfiltros('CDPESSOA');
+  adicionarfiltros('DSNOME');
+  FecharFiltro;
   inherited;
 end;
 
 procedure TFormCadPessoa.FormCreate(Sender: TObject);
 begin
-  FTabela := 'PESSOA';
-  FCamposTabela := 'CODIGO, NOME';
+  FSQL := 'SELECT * FROM PESSOA';
   inherited;
 end;
 

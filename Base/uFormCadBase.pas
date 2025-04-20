@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask,
-  Vcl.DBCtrls, Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, uDMCadBase, System.StrUtils;
+  Vcl.DBCtrls, Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, uDMCadBase, System.StrUtils, FireDAC.Comp.Client;
 
 type
   TFormCadBase = class(TForm)
@@ -37,16 +37,19 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure DBGrid1DblClick(Sender: TObject);
     procedure ButtonAlterarClick(Sender: TObject);
+    procedure EditPesquisaEnter(Sender: TObject);
   private
-    FDMCadbase: TDMCadBase;
     procedure Alterar;
   public
-    FTabela: String;
-    FCamposTabela: String;
+    FDMCadbase: TDMCadBase;
+    FSQL: String;
     FFiltrosSQL: String;
-    procedure AdicionarCampos(_Acampo: String);
+    Fconnection: TFDConnection;
     procedure AdicionarFiltros(_ACampo: String);
-    procedure Pesquisar;
+    procedure ExecutarSQL;
+    procedure InserirDadosBD;
+    procedure FecharFiltro;
+    constructor Create(AOwner: TComponent; AConnection: TFDConnection); reintroduce;
   end;
 
 var
@@ -55,6 +58,12 @@ var
 implementation
 
 {$R *.dfm}
+
+constructor TFormCadBase.Create(AOwner: TComponent; AConnection: TFDConnection);
+begin
+  inherited Create(AOwner);
+  Fconnection := AConnection;
+end;
 
 procedure TFormCadBase.Alterar;
 begin
@@ -80,9 +89,14 @@ end;
 
 procedure TFormCadBase.ButtonExcluirClick(Sender: TObject);
 begin
-  FDMCadbase.CdsCad.Edit;
-  FDMCadbase.CdsCad.Delete;
-  FDMCadbase.CdsCad.ApplyUpdates(0);
+  try
+    FDMCadbase.CdsCad.Edit;
+    FDMCadbase.CdsCad.Delete;
+    FDMCadbase.CdsCad.ApplyUpdates(0);
+  except
+    on E: Exception do
+      ShowMessage('Erro ao deletar: ' + E.Message);
+  end;
 end;
 
 procedure TFormCadBase.ButtonNovoClick(Sender: TObject);
@@ -93,23 +107,61 @@ end;
 
 procedure TFormCadBase.ButtonPesquisarClick(Sender: TObject);
 begin
-  Pesquisar;
+  ExecutarSQL;
 end;
 
-procedure TFormCadBase.Pesquisar;
+procedure TFormCadBase.EditPesquisaEnter(Sender: TObject);
 begin
-  FDMCadbase.DataModuleCreate(FTabela, FCamposTabela, FFiltrosSQL);
+  ExecutarSQL;
+end;
+
+procedure TFormCadBase.ExecutarSQL;
+begin
+  if (FDMCadbase= nil) or (FSQL = EmptyStr)  then
+    Exit;
+
+  try
+    FDMCadbase.ExecutarSQLBD(FSQL, FFiltrosSQL, Fconnection);
+    FDMCadbase.CdsCad.Refresh;
+    DsCad.DataSet.Refresh;
+    FFiltrosSQL := EmptyStr;
+  except
+    on E: Exception do
+      ShowMessage('Erro ao executar SQL: ' + E.Message);
+  end;
+end;
+
+procedure TFormCadBase.InserirDadosBD;
+var
+  AQtdErros: Integer;
+begin
+  if (FDMCadbase = nil) then
+    Exit;
+
+  if (FDMCadbase.CdsCad = nil) then
+    Exit;
+
+  if (FDMCadbase.CdsCad.IsEmpty) then
+    Exit;
+
+  try
+    FDMCadbase.CdsCad.Post;
+    AQtdErros := FDMCadbase.CdsCad.ApplyUpdates(0);
+
+    if (AQtdErros > 0) then
+      ShowMessage('Erro ao salvar');
+  except
+    on E: Exception do
+      ShowMessage('Erro ao salvar dados: ' + E.Message);
+  end;
+
+  PageControl.ActivePage := TabSheetConsulta;
   FDMCadbase.CdsCad.Refresh;
-  FFiltrosSQL := '';
 end;
 
 procedure TFormCadBase.ButtonSalvarClick(Sender: TObject);
 begin
-  FDMCadbase.CdsCad.Post;
-  FDMCadbase.CdsCad.ApplyUpdates(0);
-
-  PageControl.ActivePage := TabSheetConsulta;
-  FDMCadbase.CdsCad.Refresh;
+  InserirDadosBD;
 end;
 
 procedure TFormCadBase.DBGrid1DblClick(Sender: TObject);
@@ -119,7 +171,7 @@ end;
 
 procedure TFormCadBase.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  DsCad.DataSet := nil;
+  FreeAndNil(DsCad.DataSet);
 end;
 
 procedure TFormCadBase.FormCreate(Sender: TObject);
@@ -128,26 +180,23 @@ begin
   TabSheetConsulta.TabVisible := False;
 
   PageControl.ActivePage := TabSheetConsulta;
-  FDMCadbase := TDMCadBase.Create(nil);
-  FDMCadbase.DataModuleCreate(FTabela, FCamposTabela);
+  FDMCadbase := TDMCadBase.Create(Self);
+  FDMCadbase.ExecutarSQLBD(FSQL, '', Fconnection);
   DsCad.DataSet := FDMCadbase.CdsCad;
-  pesquisar;
-end;
-
-procedure TFormCadBase.AdicionarCampos(_Acampo: String);
-begin
-  if (FCamposTabela = EmptyStr) then
-    FCamposTabela := _Acampo
-  else
-    FCamposTabela := FCamposTabela + ', ' + _Acampo;
+  ExecutarSQL;
 end;
 
 procedure TFormCadBase.AdicionarFiltros(_ACampo: String);
 begin
   if (FFiltrosSQL = EmptyStr) then
-    FFiltrosSQL := ' AND LOWER(' + _ACampo + '::TEXT) LIKE ' + QuotedStr('%' + EditPesquisa.Text + '%')
+    FFiltrosSQL := 'AND ( ' + _ACampo + '::TEXT ILIKE ' + QuotedStr('%' + EditPesquisa.Text + '%')
   else
-    FFiltrosSQL := FFiltrosSQL + ' OR LOWER(' + _ACampo + '::TEXT) LIKE ' + QuotedStr('%' + EditPesquisa.Text + '%') ;
+    FFiltrosSQL := FFiltrosSQL + ' OR ' + _ACampo + '::TEXT ILIKE ' + QuotedStr('%' + EditPesquisa.Text + '%') ;
+end;
+
+procedure TFormCadBase.FecharFiltro;
+begin
+  FFiltrosSQL := FFiltrosSQL + ')';
 end;
 
 procedure TFormCadBase.TabSheetCadastroShow(Sender: TObject);
