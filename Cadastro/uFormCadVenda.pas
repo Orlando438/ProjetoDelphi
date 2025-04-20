@@ -13,7 +13,7 @@ uses
 
 type
   TFormCadVenda = class(TFormCadBase)
-    DBLookupComboBox1: TDBLookupComboBox;
+    DBLookupComboBoxCli: TDBLookupComboBox;
     Label3: TLabel;
     DateTimePicker2: TDateTimePicker;
     Label4: TLabel;
@@ -21,11 +21,11 @@ type
     DataSourcePessoa: TDataSource;
     QueryCarro: TFDQuery;
     DataSourceCarro: TDataSource;
-    DBLookupComboBox2: TDBLookupComboBox;
+    DBLookupComboBoxVeiculo: TDBLookupComboBox;
     procedure ButtonPesquisarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure ButtonSalvarClick(Sender: TObject);
+    procedure TabSheetCadastroShow(Sender: TObject);
   private
     procedure CarregarLookups;
   public
@@ -67,6 +67,19 @@ begin
   inherited;
 end;
 
+procedure TFormCadVenda.TabSheetCadastroShow(Sender: TObject);
+begin
+  inherited;
+  if (not FDMCadBase.CdsCad.FieldByName('DHVENDA').IsNull) then
+    DateTimePicker2.Date := FDMCadBase.CdsCad.FieldByName('DHVENDA').AsDateTime;
+
+  if (not FDMCadBase.CdsCad.FieldByName('CDPESSOA').IsNull) then
+    DBLookupComboBoxCli.KeyValue := FDMCadBase.CdsCad.FieldByName('CDPESSOA').AsInteger;
+
+  if (not FDMCadBase.CdsCad.FieldByName('CDCARRO').IsNull) then
+    DBLookupComboBoxVeiculo.KeyValue := FDMCadBase.CdsCad.FieldByName('CDCARRO').AsInteger;
+end;
+
 procedure TFormCadVenda.CarregarLookups;
 begin
   try
@@ -83,13 +96,6 @@ begin
     on E: Exception do
       ShowMessage('Erro ao executar SQL: ' + E.Message);
   end;
-end;
-
-procedure TFormCadVenda.FormShow(Sender: TObject);
-begin
-  inherited;
-  if (not FDMCadBase.CdsCad.FieldByName('DHVENDA').IsNull) then
-    DateTimePicker2.Date := FDMCadBase.CdsCad.FieldByName('DHVENDA').AsDateTime;
 end;
 
 end.

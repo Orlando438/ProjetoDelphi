@@ -1,7 +1,6 @@
 inherited FormCadVenda: TFormCadVenda
   Caption = 'Vendas'
   ClientWidth = 628
-  OnShow = FormShow
   ExplicitWidth = 640
   TextHeight = 15
   inherited PageControl: TPageControl
@@ -74,11 +73,12 @@ inherited FormCadVenda: TFormCadVenda
       inherited DBEditCodigo: TDBEdit
         DataField = 'CDVENDA'
       end
-      object DBLookupComboBox1: TDBLookupComboBox
+      object DBLookupComboBoxCli: TDBLookupComboBox
         Left = 81
         Top = 45
         Width = 145
         Height = 23
+        ImeName = 'DBLookupComboBox'
         KeyField = 'CDPESSOA'
         ListField = 'DSNOME'
         ListSource = DataSourcePessoa
@@ -93,11 +93,12 @@ inherited FormCadVenda: TFormCadVenda
         Time = 0.039194849538034760
         TabOrder = 3
       end
-      object DBLookupComboBox2: TDBLookupComboBox
+      object DBLookupComboBoxVeiculo: TDBLookupComboBox
         Left = 81
         Top = 103
         Width = 145
         Height = 23
+        ImeName = 'DBLookupComboBoxVeiculo'
         KeyField = 'CDCARRO'
         ListField = 'DSCARRO'
         ListSource = DataSourceCarro
