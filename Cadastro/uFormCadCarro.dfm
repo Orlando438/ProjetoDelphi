@@ -8,29 +8,40 @@ inherited FormCadCarro: TFormCadCarro
     ExplicitWidth = 624
     inherited TabSheetConsulta: TTabSheet
       ExplicitWidth = 620
-      inherited DBGrid1: TDBGrid
+      inherited PanelGrid: TPanel
         Width = 620
-        Columns = <
-          item
-            Expanded = False
-            FieldName = 'CDCARRO'
-            Title.Caption = 'C'#243'digo'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'DSCARRO'
-            Title.Caption = 'Modelo'
-            Width = 120
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'ANOLANCAMENTO'
-            Title.Caption = 'Ano lan'#231'amento'
-            Width = 100
-            Visible = True
-          end>
+        ExplicitLeft = 0
+        ExplicitTop = 52
+        ExplicitWidth = 620
+        ExplicitHeight = 344
+        inherited DBGrid1: TDBGrid
+          Width = 618
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'CDCARRO'
+              Title.Caption = 'C'#243'digo'
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'DSCARRO'
+              Title.Caption = 'Modelo'
+              Width = 120
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'ANOLANCAMENTO'
+              Title.Caption = 'Ano lan'#231'amento'
+              Width = 100
+              Visible = True
+            end>
+        end
+      end
+      inherited PanelConsulta: TPanel
+        Width = 620
+        ExplicitWidth = 620
       end
     end
     inherited TabSheetCadastro: TTabSheet

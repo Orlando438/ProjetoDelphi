@@ -26,6 +26,8 @@ type
     DBEditCodigo: TDBEdit;
     Label2: TLabel;
     DsCad: TDataSource;
+    PanelGrid: TPanel;
+    PanelConsulta: TPanel;
     procedure TabSheetConsultaShow(Sender: TObject);
     procedure TabSheetCadastroShow(Sender: TObject);
     procedure ButtonCancelarClick(Sender: TObject);
@@ -123,9 +125,6 @@ begin
 
   try
     FDMCadbase.ExecutarSQLBD(FSQL, FFiltrosSQL, Fconnection);
-    FDMCadbase.CdsCad.Refresh;
-    DsCad.DataSet.Refresh;
-    FFiltrosSQL := EmptyStr;
   except
     on E: Exception do
       ShowMessage('Erro ao executar SQL: ' + E.Message);

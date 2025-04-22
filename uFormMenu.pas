@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
-  FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, Vcl.StdCtrls;
+  FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.ExtCtrls;
 
 type
   TFormMenu = class(TForm)
@@ -33,6 +33,8 @@ type
     Label5: TLabel;
     Label6: TLabel;
     ButtonSalvarBD: TButton;
+    PanelMenu: TPanel;
+    GroupBoxMenu: TGroupBox;
     procedure Cadastrodepessoas1Click(Sender: TObject);
     procedure Cadastrodeveculo1Click(Sender: TObject);
     procedure Vendas1Click(Sender: TObject);
@@ -65,7 +67,7 @@ begin
     ShowMessage('Configuração de conexão salva!');
   except
     on E: Exception do
-      ShowMessage('Erro ao salvar a conexão: ' + E.Message);
+      ShowMessage('Erro de conexão, verifique os dados e tenta novamente: ' + E.Message);
   end;
 end;
 

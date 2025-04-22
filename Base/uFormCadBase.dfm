@@ -27,41 +27,61 @@ object FormCadBase: TFormCadBase
       Caption = 'Consulta'
       ImageName = 'TabSheetConsulta'
       OnShow = TabSheetConsultaShow
-      object EditPesquisa: TEdit
+      object PanelGrid: TPanel
         Left = 0
-        Top = 16
-        Width = 520
-        Height = 23
-        ImeName = 'EditPesquisa'
-        TabOrder = 0
-        OnKeyPress = EditPesquisaKeyPress
-      end
-      object ButtonPesquisar: TButton
-        Left = 526
-        Top = 14
-        Width = 91
-        Height = 25
-        Cancel = True
-        Caption = 'Pesquisar'
-        DisabledImageName = 'ButtonPesquisar'
-        TabOrder = 1
-        OnClick = ButtonPesquisarClick
-      end
-      object DBGrid1: TDBGrid
-        Left = 0
-        Top = 66
+        Top = 52
         Width = 621
-        Height = 330
-        Align = alBottom
-        DataSource = DsCad
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-        TabOrder = 2
-        TitleFont.Charset = DEFAULT_CHARSET
-        TitleFont.Color = clWindowText
-        TitleFont.Height = -12
-        TitleFont.Name = 'Segoe UI'
-        TitleFont.Style = []
-        OnDblClick = DBGrid1DblClick
+        Height = 344
+        Align = alClient
+        TabOrder = 0
+        ExplicitLeft = 176
+        ExplicitTop = 128
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object DBGrid1: TDBGrid
+          Left = 1
+          Top = 1
+          Width = 619
+          Height = 342
+          Align = alClient
+          DataSource = DsCad
+          Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+          TabOrder = 0
+          TitleFont.Charset = DEFAULT_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -12
+          TitleFont.Name = 'Segoe UI'
+          TitleFont.Style = []
+          OnDblClick = DBGrid1DblClick
+        end
+      end
+      object PanelConsulta: TPanel
+        Left = 0
+        Top = 0
+        Width = 621
+        Height = 52
+        Align = alTop
+        TabOrder = 1
+        object ButtonPesquisar: TButton
+          Left = 515
+          Top = 14
+          Width = 91
+          Height = 23
+          Cancel = True
+          Caption = 'Pesquisar'
+          DisabledImageName = 'ButtonPesquisar'
+          TabOrder = 0
+          OnClick = ButtonPesquisarClick
+        end
+        object EditPesquisa: TEdit
+          Left = 9
+          Top = 14
+          Width = 500
+          Height = 23
+          ImeName = 'EditPesquisa'
+          TabOrder = 1
+          OnKeyPress = EditPesquisaKeyPress
+        end
       end
     end
     object TabSheetCadastro: TTabSheet

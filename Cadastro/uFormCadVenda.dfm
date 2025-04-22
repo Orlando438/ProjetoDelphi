@@ -5,46 +5,49 @@ inherited FormCadVenda: TFormCadVenda
   TextHeight = 15
   inherited PageControl: TPageControl
     Width = 628
-    ActivePage = TabSheetCadastro
     ExplicitWidth = 624
     inherited TabSheetConsulta: TTabSheet
       ExplicitWidth = 620
-      inherited EditPesquisa: TEdit
-        OnKeyPress = nil
-      end
-      inherited ButtonPesquisar: TButton
-        Top = 15
-        ExplicitTop = 15
-      end
-      inherited DBGrid1: TDBGrid
+      inherited PanelGrid: TPanel
         Width = 620
-        Columns = <
-          item
-            Expanded = False
-            FieldName = 'CDVENDA'
-            Title.Caption = 'C'#243'digo'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'DHVENDA'
-            Title.Caption = 'Data'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'DSNOME'
-            Title.Caption = 'Cliente'
-            Width = 120
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'DSCARRO'
-            Title.Caption = 'Ve'#237'culo'
-            Width = 120
-            Visible = True
-          end>
+        ExplicitLeft = 0
+        ExplicitTop = 52
+        ExplicitWidth = 620
+        ExplicitHeight = 344
+        inherited DBGrid1: TDBGrid
+          Width = 618
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'CDVENDA'
+              Title.Caption = 'C'#243'digo'
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'DHVENDA'
+              Title.Caption = 'Data'
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'DSNOME'
+              Title.Caption = 'Cliente'
+              Width = 120
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'DSCARRO'
+              Title.Caption = 'Ve'#237'culo'
+              Width = 120
+              Visible = True
+            end>
+        end
+      end
+      inherited PanelConsulta: TPanel
+        Width = 620
+        ExplicitWidth = 620
       end
     end
     inherited TabSheetCadastro: TTabSheet

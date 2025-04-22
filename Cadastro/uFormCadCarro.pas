@@ -45,7 +45,7 @@ end;
 procedure TFormCadCarro.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
 begin
   if (Key = #13) then
-   pesquisar;
+    pesquisar;
 
   inherited;
 end;

@@ -22,10 +22,10 @@ type
     QueryCarro: TFDQuery;
     DataSourceCarro: TDataSource;
     DBLookupComboBoxVeiculo: TDBLookupComboBox;
-    procedure ButtonPesquisarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ButtonSalvarClick(Sender: TObject);
     procedure TabSheetCadastroShow(Sender: TObject);
+    procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
   private
     procedure CarregarLookups;
     procedure Pesquisar;
@@ -39,12 +39,6 @@ var
 implementation
 
 {$R *.dfm}
-
-procedure TFormCadVenda.ButtonPesquisarClick(Sender: TObject);
-begin
-  Pesquisar;
-  inherited;
-end;
 
 procedure TFormCadVenda.Pesquisar;
 begin
@@ -98,6 +92,14 @@ begin
     on E: Exception do
       ShowMessage('Erro ao executar SQL: ' + E.Message);
   end;
+end;
+
+procedure TFormCadVenda.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #13) then
+    Pesquisar;
+
+  inherited;
 end;
 
 end.
