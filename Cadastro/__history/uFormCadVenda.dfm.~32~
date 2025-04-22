@@ -5,7 +5,6 @@ inherited FormCadVenda: TFormCadVenda
   TextHeight = 15
   inherited PageControl: TPageControl
     Width = 628
-    ActivePage = TabSheetCadastro
     ExplicitWidth = 624
     inherited TabSheetConsulta: TTabSheet
       ExplicitWidth = 620
