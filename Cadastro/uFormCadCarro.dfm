@@ -35,11 +35,28 @@ inherited FormCadCarro: TFormCadCarro
     end
     inherited TabSheetCadastro: TTabSheet
       ExplicitWidth = 620
+      object Label3: TLabel [2]
+        Left = 53
+        Top = 77
+        Width = 22
+        Height = 15
+        Caption = 'Ano'
+      end
       inherited DBEditDescricao: TDBEdit
         DataField = 'DSCARRO'
       end
       inherited DBEditCodigo: TDBEdit
         DataField = 'CDCARRO'
+      end
+      object DBEdit1: TDBEdit
+        Left = 81
+        Top = 74
+        Width = 72
+        Height = 23
+        DataField = 'ANOLANCAMENTO'
+        DataSource = DsCad
+        ImeName = 'DBEditAnoLancamento'
+        TabOrder = 2
       end
     end
   end

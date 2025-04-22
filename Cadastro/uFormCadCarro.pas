@@ -9,10 +9,13 @@ uses
 
 type
   TFormCadCarro = class(TFormCadBase)
+    DBEdit1: TDBEdit;
+    Label3: TLabel;
     procedure ButtonPesquisarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
   private
-    { Private declarations }
+    procedure Pesquisar;
   public
     { Public declarations }
   end;
@@ -26,10 +29,24 @@ implementation
 
 procedure TFormCadCarro.ButtonPesquisarClick(Sender: TObject);
 begin
+  Pesquisar;
+  inherited;
+end;
+
+procedure TFormCadCarro.Pesquisar;
+begin
   FFiltrosSQL := '';
   adicionarfiltros('CDCARRO');
   adicionarfiltros('DSCARRO');
+  adicionarfiltros('ANOLANCAMENTO');
   FecharFiltro;
+end;
+
+procedure TFormCadCarro.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #13) then
+   pesquisar;
+
   inherited;
 end;
 

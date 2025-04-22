@@ -34,7 +34,7 @@ object FormCadBase: TFormCadBase
         Height = 23
         ImeName = 'EditPesquisa'
         TabOrder = 0
-        OnEnter = EditPesquisaEnter
+        OnKeyPress = EditPesquisaKeyPress
       end
       object ButtonPesquisar: TButton
         Left = 526

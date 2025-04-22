@@ -12,9 +12,10 @@ type
   TFormCadPessoa = class(TFormCadBase)
     procedure FormCreate(Sender: TObject);
     procedure ButtonPesquisarClick(Sender: TObject);
+    procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
   private
   public
-    { Public declarations }
+    procedure Pesquisar;
   end;
 
 var
@@ -26,10 +27,23 @@ implementation
 
 procedure TFormCadPessoa.ButtonPesquisarClick(Sender: TObject);
 begin
+  Pesquisar;
+  inherited;
+end;
+
+procedure TFormCadPessoa.Pesquisar;
+begin
   FFiltrosSQL := '';
   adicionarfiltros('CDPESSOA');
   adicionarfiltros('DSNOME');
   FecharFiltro;
+end;
+
+procedure TFormCadPessoa.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #13) then
+   pesquisar;
+
   inherited;
 end;
 

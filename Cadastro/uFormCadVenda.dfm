@@ -5,10 +5,12 @@ inherited FormCadVenda: TFormCadVenda
   TextHeight = 15
   inherited PageControl: TPageControl
     Width = 628
-    ActivePage = TabSheetCadastro
     ExplicitWidth = 624
     inherited TabSheetConsulta: TTabSheet
       ExplicitWidth = 620
+      inherited EditPesquisa: TEdit
+        OnKeyPress = nil
+      end
       inherited ButtonPesquisar: TButton
         Top = 15
         ExplicitTop = 15
@@ -32,6 +34,13 @@ inherited FormCadVenda: TFormCadVenda
             Expanded = False
             FieldName = 'DSNOME'
             Title.Caption = 'Cliente'
+            Width = 120
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DSCARRO'
+            Title.Caption = 'Ve'#237'culo'
             Width = 120
             Visible = True
           end>
@@ -78,6 +87,8 @@ inherited FormCadVenda: TFormCadVenda
         Top = 45
         Width = 145
         Height = 23
+        DataField = 'CDPESSOA'
+        DataSource = DsCad
         ImeName = 'DBLookupComboBox'
         KeyField = 'CDPESSOA'
         ListField = 'DSNOME'
@@ -98,6 +109,8 @@ inherited FormCadVenda: TFormCadVenda
         Top = 103
         Width = 145
         Height = 23
+        DataField = 'CDCARRO'
+        DataSource = DsCad
         ImeName = 'DBLookupComboBoxVeiculo'
         KeyField = 'CDCARRO'
         ListField = 'DSCARRO'

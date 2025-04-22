@@ -28,6 +28,7 @@ type
     procedure TabSheetCadastroShow(Sender: TObject);
   private
     procedure CarregarLookups;
+    procedure Pesquisar;
   public
     { Public declarations }
   end;
@@ -41,18 +42,23 @@ implementation
 
 procedure TFormCadVenda.ButtonPesquisarClick(Sender: TObject);
 begin
+  Pesquisar;
+  inherited;
+end;
+
+procedure TFormCadVenda.Pesquisar;
+begin
   FFiltrosSQL := '';
   adicionarfiltros('VENDA.CDVENDA');
   adicionarfiltros('VENDA.DHVENDA');
   adicionarfiltros('PESSOA.DSNOME');
   adicionarfiltros('CARRO.DSCARRO');
   FecharFiltro;
-  inherited;
 end;
 
 procedure TFormCadVenda.ButtonSalvarClick(Sender: TObject);
 begin
-  if not FDMCadBase.CdsCad.FieldByName('DHVENDA').IsNull then
+  if not(FDMCadBase.CdsCad.FieldByName('DHVENDA').IsNull) then
       FDMCadBase.CdsCad.FieldByName('DHVENDA').AsDateTime := DateTimePicker2.Date;
   inherited;
 end;
@@ -72,16 +78,12 @@ begin
   inherited;
   if (not FDMCadBase.CdsCad.FieldByName('DHVENDA').IsNull) then
     DateTimePicker2.Date := FDMCadBase.CdsCad.FieldByName('DHVENDA').AsDateTime;
-
-  if (not FDMCadBase.CdsCad.FieldByName('CDPESSOA').IsNull) then
-    DBLookupComboBoxCli.KeyValue := FDMCadBase.CdsCad.FieldByName('CDPESSOA').AsInteger;
-
-  if (not FDMCadBase.CdsCad.FieldByName('CDCARRO').IsNull) then
-    DBLookupComboBoxVeiculo.KeyValue := FDMCadBase.CdsCad.FieldByName('CDCARRO').AsInteger;
 end;
 
 procedure TFormCadVenda.CarregarLookups;
 begin
+  if (Fconnection = nil) then
+    ShowMessage('Erro. Verifique os dados de conexão com o banco');
   try
     QueryPessoa.Close;
     QueryPessoa.Connection := Fconnection;

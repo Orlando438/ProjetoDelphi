@@ -37,7 +37,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure DBGrid1DblClick(Sender: TObject);
     procedure ButtonAlterarClick(Sender: TObject);
-    procedure EditPesquisaEnter(Sender: TObject);
+    procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
   private
     procedure Alterar;
   public
@@ -110,9 +110,10 @@ begin
   ExecutarSQL;
 end;
 
-procedure TFormCadBase.EditPesquisaEnter(Sender: TObject);
+procedure TFormCadBase.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
 begin
-  ExecutarSQL;
+  if (Key = #13) then
+    ExecutarSQL;
 end;
 
 procedure TFormCadBase.ExecutarSQL;
