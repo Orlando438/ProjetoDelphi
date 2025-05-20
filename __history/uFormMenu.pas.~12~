@@ -86,13 +86,7 @@ end;
 procedure TFormMenu.Cadastrodeveculo1Click(Sender: TObject);
 var
   AFormCad: TFormCadCarro;
-  varia: Integer;
 begin
-  varia := 0;
-
-  if varia > 0 then
-    exit;
-
   AFormCad := TFormCadCarro.Create(Self, Connection);
   try
     AFormCad.ShowModal;
