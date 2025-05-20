@@ -23,7 +23,7 @@ async function main() {
     messages: [
       {
         role: "user",
-        content: `Bom base na diff informada analise e faça um comentário breve e curto para quem vai testar a tarefa descreverndo o que muda e possíveis impactos:\n\n${diff}`
+        content: `Bom base na diff informada analise e faça um comentário breve e curto para quem vai testar a tarefa descreverndo o que muda e possíveis impactos, lembrando que você está expliando para um teste, alguém sem experiencia nenhuma com desenvolvimento:\n\n${diff}`
       }
     ]
   });
