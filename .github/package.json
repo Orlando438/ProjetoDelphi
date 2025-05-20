@@ -1,0 +1,12 @@
+{
+    "name": "chatgpt-diff-action",
+    "type": "module",
+    "scripts": {
+      "analisar": "node index.mjs"
+    },
+    "dependencies": {
+      "dotenv": "^16.4.5",
+      "openai": "^4.27.0"
+    }
+  }
+  
