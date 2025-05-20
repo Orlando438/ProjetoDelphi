@@ -19,10 +19,8 @@ object FormMenu: TFormMenu
     Height = 442
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 360
-    ExplicitTop = 200
-    ExplicitWidth = 185
-    ExplicitHeight = 41
+    ExplicitWidth = 624
+    ExplicitHeight = 441
     object GroupBoxMenu: TGroupBox
       Left = 15
       Top = 13

@@ -21,7 +21,6 @@ type
     DataSourcePessoa: TDataSource;
     QueryCarro: TFDQuery;
     DataSourceCarro: TDataSource;
-    DBLookupComboBoxVeiculo: TDBLookupComboBox;
     procedure FormCreate(Sender: TObject);
     procedure ButtonSalvarClick(Sender: TObject);
     procedure TabSheetCadastroShow(Sender: TObject);

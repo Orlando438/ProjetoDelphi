@@ -8,7 +8,8 @@ uses
   uConstante in 'uConstante.pas',
   uFormMenu in 'uFormMenu.pas' {FormMenu},
   uFormCadCarro in 'Cadastro\uFormCadCarro.pas' {FormCadCarro},
-  uFormCadVenda in 'Cadastro\uFormCadVenda.pas' {FormCadVenda};
+  uFormCadVenda in 'Cadastro\uFormCadVenda.pas' {FormCadVenda},
+  uDBEditLookup in 'Base\uDBEditLookup.pas';
 
 {$R *.res}
 

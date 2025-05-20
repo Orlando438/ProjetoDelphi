@@ -1,10 +1,13 @@
 inherited FormCadVenda: TFormCadVenda
   Caption = 'Vendas'
+  ClientHeight = 460
   ClientWidth = 628
   ExplicitWidth = 640
   TextHeight = 15
   inherited PageControl: TPageControl
     Width = 628
+    Height = 426
+    ActivePage = TabSheetCadastro
     ExplicitWidth = 624
     inherited TabSheetConsulta: TTabSheet
       ExplicitWidth = 620
@@ -108,22 +111,10 @@ inherited FormCadVenda: TFormCadVenda
         Time = 0.039194849538034760
         TabOrder = 3
       end
-      object DBLookupComboBoxVeiculo: TDBLookupComboBox
-        Left = 81
-        Top = 103
-        Width = 145
-        Height = 23
-        DataField = 'CDCARRO'
-        DataSource = DsCad
-        ImeName = 'DBLookupComboBoxVeiculo'
-        KeyField = 'CDCARRO'
-        ListField = 'DSCARRO'
-        ListSource = DataSourceCarro
-        TabOrder = 4
-      end
     end
   end
   inherited ControlBar1: TControlBar
+    Top = 426
     Width = 628
     ExplicitWidth = 624
   end

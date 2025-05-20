@@ -121,6 +121,7 @@
             <Form>FormCadVenda</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Base\uDBEditLookup.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
