@@ -90,7 +90,6 @@ begin
   AFormCad := TFormCadCarro.Create(Self, Connection);
   try
     AFormCad.ShowModal;
-    //teste
   finally
     AFormCad.Free;
   end;
