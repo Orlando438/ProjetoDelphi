@@ -86,7 +86,7 @@ object FormMenu: TFormMenu
         Width = 179
         Height = 23
         TabOrder = 1
-        Text = 'Empresa'
+        Text = 'C:\Users\Orlando\Desktop\empresa.fdb'
       end
       object EditDriverID: TEdit
         Left = 94
@@ -94,7 +94,7 @@ object FormMenu: TFormMenu
         Width = 179
         Height = 23
         TabOrder = 2
-        Text = 'PG'
+        Text = 'FB'
       end
       object EditPorta: TEdit
         Left = 94
@@ -102,7 +102,7 @@ object FormMenu: TFormMenu
         Width = 179
         Height = 23
         TabOrder = 3
-        Text = '5432'
+        Text = '3050'
       end
       object EditSenha: TEdit
         Left = 94
@@ -110,7 +110,7 @@ object FormMenu: TFormMenu
         Width = 179
         Height = 23
         TabOrder = 4
-        Text = '1'
+        Text = 'masterkey'
       end
       object EditServer: TEdit
         Left = 94
@@ -127,7 +127,7 @@ object FormMenu: TFormMenu
         Width = 179
         Height = 23
         TabOrder = 6
-        Text = 'postgres'
+        Text = 'SYSDBA'
       end
     end
   end

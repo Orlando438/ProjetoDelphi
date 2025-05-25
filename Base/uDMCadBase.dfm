@@ -10,7 +10,6 @@ object DMCadBase: TDMCadBase
   end
   object QueryCad: TFDQuery
     ChangeAlertName = 'Query'
-    Connection = Connection
     Left = 200
     Top = 87
   end
@@ -19,13 +18,20 @@ object DMCadBase: TDMCadBase
     Left = 288
     Top = 88
   end
+  object FDPhysFBDriverLink: TFDPhysFBDriverLink
+    VendorLib = 'C:\Program Files\Firebird\Firebird_5_0\fbclient.dll'
+    Left = 96
+    Top = 96
+  end
+  object FDGUIxWaitCursor: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 104
+    Top = 192
+  end
   object Connection: TFDConnection
     Params.Strings = (
-      'Database=Empresa'
-      'DriverID=PG'
-      'User_Name=postgres'
-      'Password=1')
+      'ConnectionDef=Connection')
     Left = 440
-    Top = 85
+    Top = 88
   end
 end

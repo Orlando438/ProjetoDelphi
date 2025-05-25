@@ -34,10 +34,8 @@ object FormCadBase: TFormCadBase
         Height = 344
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 176
-        ExplicitTop = 128
-        ExplicitWidth = 185
-        ExplicitHeight = 41
+        ExplicitWidth = 617
+        ExplicitHeight = 343
         object DBGrid1: TDBGrid
           Left = 1
           Top = 1
@@ -62,6 +60,7 @@ object FormCadBase: TFormCadBase
         Height = 52
         Align = alTop
         TabOrder = 1
+        ExplicitWidth = 617
         object ButtonPesquisar: TButton
           Left = 515
           Top = 14

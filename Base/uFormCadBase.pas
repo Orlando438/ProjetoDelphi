@@ -47,6 +47,7 @@ type
     FSQL: String;
     FFiltrosSQL: String;
     Fconnection: TFDConnection;
+    FGeradorNovoCod: String;
     procedure AdicionarFiltros(_ACampo: String);
     procedure ExecutarSQL;
     procedure InserirDadosBD;
@@ -105,6 +106,9 @@ procedure TFormCadBase.ButtonNovoClick(Sender: TObject);
 begin
   TabSheetCadastro.Show;
   FDMCadbase.CdsCad.Append;
+
+  FDMCadbase.CdsCad.Edit;
+  FDMCadbase.CdsCad.FieldByName('ID').AsInteger := FDMCadbase.GetNovoCod(FGeradorNovoCod, Fconnection);
 end;
 
 procedure TFormCadBase.ButtonPesquisarClick(Sender: TObject);

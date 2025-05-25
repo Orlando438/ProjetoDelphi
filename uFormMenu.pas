@@ -57,11 +57,12 @@ uses uFormCadPessoa, uFormCadCarro, uFormCadVenda;
 procedure TFormMenu.ButtonSalvarBDClick(Sender: TObject);
 begin
   try
-    Connection.Params.Values['DriverID'] := EditDriverID.Text;
-    Connection.Params.Values['Server'] := EditServer.Text;
-    Connection.Params.Values['Database'] := EditDataBase.Text;
-    Connection.Params.Values['User_Name'] := EditUsuario.Text;
-    Connection.Params.Values['Password'] := EditSenha.Text;
+    Connection.Params.DriverID := Trim(EditDriverID.Text);
+    Connection.Params.Database := Trim(EditDataBase.Text);
+    Connection.Params.UserName := Trim(EditUsuario.Text);
+    Connection.Params.Password := Trim(EditSenha.Text);
+    Connection.Params.Add('Server=' + Trim(EditServer.Text));
+    Connection.Params.Add('Port=' + Trim(EditPorta.Text));
 
     Connection.Connected := True;
     ShowMessage('Configuração de conexão salva!');
