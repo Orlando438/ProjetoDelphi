@@ -32,11 +32,6 @@ __history/
 __recovery/
 __recovery*
 
-# ========== Diretórios temporários ==========
-Win32/
-Win64/
-Debug/
-Release/
 ClientDataSet/
 
 # ========== ACBr específico ==========
