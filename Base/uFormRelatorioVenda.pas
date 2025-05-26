@@ -37,7 +37,7 @@ begin
   try
     FormRel.CarregarRelatorio(dtini.Date, dtfim.Date);
   finally
-    Free;
+    FormRel.Free;
   end;
 end;
 
