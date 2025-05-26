@@ -136,6 +136,7 @@ object FormCadBase: TFormCadBase
       Top = 2
       Width = 75
       Height = 22
+      Align = alRight
       Cancel = True
       Caption = 'Salvar'
       TabOrder = 0
@@ -146,6 +147,7 @@ object FormCadBase: TFormCadBase
       Top = 2
       Width = 75
       Height = 22
+      Align = alRight
       Cancel = True
       Caption = 'Cancelar'
       TabOrder = 1

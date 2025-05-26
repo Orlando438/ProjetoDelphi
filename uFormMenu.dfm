@@ -94,7 +94,7 @@ object FormMenu: TFormMenu
         Width = 179
         Height = 23
         TabOrder = 2
-        Text = 'FB'
+        Text = 'Firebird'
       end
       object EditPorta: TEdit
         Left = 94
@@ -143,13 +143,9 @@ object FormMenu: TFormMenu
     Top = 104
     object Cadastrodeitem1: TMenuItem
       Caption = 'Cadastros'
-      object Cadastrodepessoas1: TMenuItem
-        Caption = 'Cadastro de pessoas'
-        OnClick = Cadastrodepessoas1Click
-      end
-      object Cadastrodeveculo1: TMenuItem
-        Caption = 'Cadastro de ve'#237'culo'
-        OnClick = Cadastrodeveculo1Click
+      object Item1: TMenuItem
+        Caption = 'Item'
+        OnClick = Item1Click
       end
     end
     object Processos1: TMenuItem
@@ -159,9 +155,16 @@ object FormMenu: TFormMenu
         OnClick = Vendas1Click
       end
     end
+    object Relatrios1: TMenuItem
+      Caption = 'Relat'#243'rios'
+      object Venda1: TMenuItem
+        Caption = 'Venda'
+        OnClick = Venda1Click
+      end
+    end
   end
-  object Connection: TFDConnection
-    Left = 544
-    Top = 184
+  object Connection: TSQLConnection
+    Left = 560
+    Top = 192
   end
 end

@@ -75,6 +75,13 @@
         Height = 15
         Caption = 'CEP'
       end
+      object Label9: TLabel [4]
+        Left = 22
+        Top = 290
+        Width = 53
+        Height = 15
+        Caption = 'Valor total'
+      end
       inherited DBEditDescricao: TDBEdit
         Left = 361
         Top = 16
@@ -116,7 +123,7 @@
       object Endereço: TGroupBox
         Left = 81
         Top = 132
-        Width = 272
+        Width = 237
         Height = 149
         Caption = 'Endere'#231'o'
         TabOrder = 5
@@ -152,64 +159,72 @@
           Caption = 'Estado'
         end
         object DBEditRua: TDBEdit
-          Left = 47
+          Left = 52
           Top = 23
           Width = 145
           Height = 23
+          DataField = 'RUA'
+          DataSource = DsCad
           TabOrder = 0
         end
         object DBEditBairro: TDBEdit
-          Left = 47
+          Left = 52
           Top = 52
           Width = 145
           Height = 23
+          DataField = 'BAIRRO'
+          DataSource = DsCad
           TabOrder = 1
         end
         object DBEditCidade: TDBEdit
-          Left = 47
+          Left = 52
           Top = 81
           Width = 145
           Height = 23
+          DataField = 'CIDADE'
+          DataSource = DsCad
           TabOrder = 2
         end
         object DBEditEstado: TDBEdit
-          Left = 47
+          Left = 52
           Top = 110
           Width = 145
           Height = 23
+          DataField = 'ESTADO'
+          DataSource = DsCad
           TabOrder = 3
           StyleName = 'Windows'
         end
       end
       object Panel1: TPanel
         Left = 0
-        Top = 287
+        Top = 320
         Width = 761
-        Height = 206
+        Height = 173
         Align = alBottom
         TabOrder = 6
-        ExplicitTop = 286
+        ExplicitTop = 319
         ExplicitWidth = 757
         object Panel2: TPanel
           Left = 1
-          Top = 176
+          Top = 143
           Width = 759
           Height = 29
           Align = alBottom
           TabOrder = 0
           ExplicitWidth = 755
-          object Button1: TButton
+          object ButtonInserir: TButton
             Left = 1
             Top = 1
             Width = 86
             Height = 27
             Align = alLeft
             Caption = 'Inserir'
-            DisabledImageName = 'ButtonNovo'
+            DisabledImageName = 'ButtonInserir'
             TabOrder = 0
-            OnClick = ButtonNovoClick
+            OnClick = ButtonInserirClick
           end
-          object Button2: TButton
+          object ButtonAlterarItem: TButton
             Left = 87
             Top = 1
             Width = 86
@@ -218,9 +233,10 @@
             Caption = 'Alterar'
             DisabledImageName = 'ButtonAlterar'
             TabOrder = 1
-            OnClick = ButtonAlterarClick
+            OnClick = ButtonAlterarItemClick
+            ExplicitLeft = 93
           end
-          object Button3: TButton
+          object ButtonExcluirItem: TButton
             Left = 173
             Top = 1
             Width = 86
@@ -230,21 +246,44 @@
             Caption = 'Excluir'
             DisabledImageName = 'Button'
             TabOrder = 2
-            OnClick = ButtonExcluirClick
+            OnClick = ButtonExcluirItemClick
           end
         end
         object DBGrid2: TDBGrid
           Left = 1
           Top = 1
           Width = 759
-          Height = 175
+          Height = 142
           Align = alClient
+          DataSource = DsItems
           TabOrder = 1
           TitleFont.Charset = DEFAULT_CHARSET
           TitleFont.Color = clWindowText
           TitleFont.Height = -12
           TitleFont.Name = 'Segoe UI'
           TitleFont.Style = []
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'PRODUTO_ID'
+              Title.Caption = 'cod. Item'
+              Width = 90
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'QUANTIDADE'
+              Title.Caption = 'Quantidade'
+              Width = 90
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'VALOR_TOTAL'
+              Title.Caption = 'Valor total'
+              Width = 90
+              Visible = True
+            end>
         end
       end
       object Button4: TButton
@@ -257,7 +296,16 @@
         Caption = 'Buscar'
         DisabledImageName = 'Button'
         TabOrder = 7
-        OnClick = ButtonExcluirClick
+        OnClick = Button4Click
+      end
+      object DBEditValorTotal: TDBEdit
+        Left = 81
+        Top = 287
+        Width = 145
+        Height = 23
+        DataField = 'VALOR_TOTAL'
+        DataSource = DsCad
+        TabOrder = 8
       end
     end
   end
@@ -277,8 +325,8 @@
   end
   object DataSourcePessoa: TDataSource
     DataSet = QueryPessoa
-    Left = 484
-    Top = 98
+    Left = 452
+    Top = 122
   end
   object ACBrCEP: TACBrCEP
     ProxyPort = '8080'
@@ -287,5 +335,15 @@
     PesquisarIBGE = True
     Left = 612
     Top = 210
+  end
+  object DsItems: TDataSource
+    Left = 620
+    Top = 282
+  end
+  object CdsItems: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 620
+    Top = 353
   end
 end

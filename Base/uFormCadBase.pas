@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask,
-  Vcl.DBCtrls, Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, uDMCadBase, System.StrUtils, FireDAC.Comp.Client;
+  Vcl.DBCtrls, Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, uDMCadBase, System.StrUtils, FireDAC.Comp.Client,
+  Data.SqlExpr;
 
 type
   TFormCadBase = class(TForm)
@@ -46,13 +47,13 @@ type
     FDMCadbase: TDMCadBase;
     FSQL: String;
     FFiltrosSQL: String;
-    Fconnection: TFDConnection;
+    FconnectionCad: TSQLConnection;
     FGeradorNovoCod: String;
     procedure AdicionarFiltros(_ACampo: String);
     procedure ExecutarSQL;
     procedure InserirDadosBD;
     procedure FecharFiltro;
-    constructor Create(AOwner: TComponent; AConnection: TFDConnection); reintroduce;
+    constructor Create(AOwner: TComponent; AConnection: TCustomConnection); reintroduce;
   end;
 
 var
@@ -62,10 +63,10 @@ implementation
 
 {$R *.dfm}
 
-constructor TFormCadBase.Create(AOwner: TComponent; AConnection: TFDConnection);
+constructor TFormCadBase.Create(AOwner: TComponent; AConnection: TCustomConnection);
 begin
   inherited Create(AOwner);
-  Fconnection := AConnection;
+  FconnectionCad := TSQLConnection(AConnection);
 end;
 
 procedure TFormCadBase.Alterar;
@@ -105,10 +106,13 @@ end;
 procedure TFormCadBase.ButtonNovoClick(Sender: TObject);
 begin
   TabSheetCadastro.Show;
-  FDMCadbase.CdsCad.Append;
 
-  FDMCadbase.CdsCad.Edit;
-  FDMCadbase.CdsCad.FieldByName('ID').AsInteger := FDMCadbase.GetNovoCod(FGeradorNovoCod, Fconnection);
+  FGeradorNovoCod := FGeradorNovoCod;
+  FDMCadbase.Fconnection := FconnectionCad;
+  FDMCadbase.CdsCad.DisableControls;
+  FDMCadbase.CdsCad.Append;
+  FDMCadbase.CdsCad.EnableControls;
+  //FDMCadbase.CdsCad.FieldByName('ID').AsInteger := FDMCadbase.GetNovoCod(FGeradorNovoCod, Fconnection);
 end;
 
 procedure TFormCadBase.ButtonPesquisarClick(Sender: TObject);
@@ -128,7 +132,7 @@ begin
     Exit;
 
   try
-    FDMCadbase.ExecutarSQLBD(FSQL, FFiltrosSQL, Fconnection);
+    FDMCadbase.ExecutarSQLBD(FSQL, FFiltrosSQL, FconnectionCad);
   except
     on E: Exception do
       ShowMessage('Erro ao executar SQL: ' + E.Message);
@@ -175,7 +179,7 @@ end;
 
 procedure TFormCadBase.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  FreeAndNil(DsCad.DataSet);
+  //FreeAndNil(DsCad.DataSet);
 end;
 
 procedure TFormCadBase.FormCreate(Sender: TObject);
@@ -185,18 +189,21 @@ begin
 
   PageControl.ActivePage := TabSheetConsulta;
   FDMCadbase := TDMCadBase.Create(Self);
-  FDMCadbase.ExecutarSQLBD(FSQL, '', Fconnection);
+  FDMCadbase.ExecutarSQLBD(FSQL, '', FconnectionCad);
   DsCad.DataSet := FDMCadbase.CdsCad;
   ExecutarSQL;
 end;
 
 procedure TFormCadBase.AdicionarFiltros(_ACampo: String);
 begin
-  if (FFiltrosSQL = EmptyStr) then
-    FFiltrosSQL := 'AND ( ' + _ACampo + '::TEXT ILIKE ' + QuotedStr('%' + EditPesquisa.Text + '%')
+  if FFiltrosSQL = EmptyStr then
+    FFiltrosSQL := 'AND ( UPPER(CAST(' + _ACampo + ' AS VARCHAR(255))) LIKE ' +
+                   QuotedStr('%' + UpperCase(EditPesquisa.Text) + '%')
   else
-    FFiltrosSQL := FFiltrosSQL + ' OR ' + _ACampo + '::TEXT ILIKE ' + QuotedStr('%' + EditPesquisa.Text + '%') ;
+    FFiltrosSQL := FFiltrosSQL + ' OR UPPER(CAST(' + _ACampo + ' AS VARCHAR(255))) LIKE ' +
+                   QuotedStr('%' + UpperCase(EditPesquisa.Text) + '%');
 end;
+
 
 procedure TFormCadBase.FecharFiltro;
 begin

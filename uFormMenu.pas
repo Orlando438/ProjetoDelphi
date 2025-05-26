@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
-  FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.ExtCtrls;
+  FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DBXFirebird,
+  Data.SqlExpr;
 
 type
   TFormMenu = class(TForm)
@@ -15,11 +16,8 @@ type
     Cadastrarpessoa1: TMenuItem;
     MainMenu: TMainMenu;
     Cadastrodeitem1: TMenuItem;
-    Cadastrodepessoas1: TMenuItem;
-    Cadastrodeveculo1: TMenuItem;
     Processos1: TMenuItem;
     Vendas1: TMenuItem;
-    Connection: TFDConnection;
     EditDriverID: TEdit;
     EditServer: TEdit;
     EditDataBase: TEdit;
@@ -35,10 +33,14 @@ type
     ButtonSalvarBD: TButton;
     PanelMenu: TPanel;
     GroupBoxMenu: TGroupBox;
-    procedure Cadastrodepessoas1Click(Sender: TObject);
-    procedure Cadastrodeveculo1Click(Sender: TObject);
+    Connection: TSQLConnection;
+    Item1: TMenuItem;
+    Relatrios1: TMenuItem;
+    Venda1: TMenuItem;
     procedure Vendas1Click(Sender: TObject);
     procedure ButtonSalvarBDClick(Sender: TObject);
+    procedure Item1Click(Sender: TObject);
+    procedure Venda1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -52,31 +54,35 @@ implementation
 
 {$R *.dfm}
 
-uses uFormCadPessoa, uFormCadCarro, uFormCadVenda;
+uses uFormCadVenda, uFormCadItem, uFormRelatorioVenda;
 
 procedure TFormMenu.ButtonSalvarBDClick(Sender: TObject);
 begin
   try
-    Connection.Params.DriverID := Trim(EditDriverID.Text);
-    Connection.Params.Database := Trim(EditDataBase.Text);
-    Connection.Params.UserName := Trim(EditUsuario.Text);
-    Connection.Params.Password := Trim(EditSenha.Text);
-    Connection.Params.Add('Server=' + Trim(EditServer.Text));
-    Connection.Params.Add('Port=' + Trim(EditPorta.Text));
+    Connection.Connected := False;
 
+    Connection.DriverName := Trim(EditDriverID.Text);
+    Connection.Params.Values['Database'] := Trim(EditDataBase.Text);
+    Connection.Params.Values['User_Name'] := Trim(EditUsuario.Text);
+    Connection.Params.Values['Password'] := Trim(EditSenha.Text);
+    Connection.Params.Values['Server'] := Trim(EditServer.Text);
+    Connection.Params.Values['Port'] := Trim(EditPorta.Text);
+
+    Connection.LoginPrompt := False;
     Connection.Connected := True;
+
     ShowMessage('Configuração de conexão salva!');
   except
     on E: Exception do
-      ShowMessage('Erro de conexão, verifique os dados e tenta novamente: ' + E.Message);
+      ShowMessage('Erro de conexão, verifique os dados e tente novamente: ' + E.Message);
   end;
 end;
 
-procedure TFormMenu.Cadastrodepessoas1Click(Sender: TObject);
+procedure TFormMenu.Item1Click(Sender: TObject);
 var
-  AFormCad: TFormCadPessoa;
+  AFormCad: TFormCadItem;
 begin
-  AFormCad := TFormCadPessoa.Create(Self, Connection);
+  AFormCad := TFormCadItem.Create(Self, Connection);
   try
     AFormCad.ShowModal;
   finally
@@ -84,11 +90,11 @@ begin
   end;
 end;
 
-procedure TFormMenu.Cadastrodeveculo1Click(Sender: TObject);
+procedure TFormMenu.Venda1Click(Sender: TObject);
 var
-  AFormCad: TFormCadCarro;
+  AFormCad: TFormRelatorioVenda;
 begin
-  AFormCad := TFormCadCarro.Create(Self, Connection);
+  AFormCad := TFormRelatorioVenda.Create(Self, Connection);
   try
     AFormCad.ShowModal;
   finally

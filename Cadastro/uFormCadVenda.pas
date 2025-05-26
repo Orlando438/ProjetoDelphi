@@ -9,7 +9,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  Vcl.Buttons, ACBrBase, ACBrSocket, ACBrCEP;
+  Vcl.Buttons, ACBrBase, ACBrSocket, ACBrCEP, Datasnap.DBClient;
 
 type
   TFormCadVenda = class(TFormCadBase)
@@ -32,19 +32,28 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     DBGrid2: TDBGrid;
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
+    ButtonInserir: TButton;
+    ButtonAlterarItem: TButton;
+    ButtonExcluirItem: TButton;
     Button4: TButton;
     ACBrCEP: TACBrCEP;
+    DsItems: TDataSource;
+    CdsItems: TClientDataSet;
+    DBEditValorTotal: TDBEdit;
+    Label9: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure ButtonSalvarClick(Sender: TObject);
     procedure TabSheetCadastroShow(Sender: TObject);
     procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
-    procedure ButtonExcluirClick(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure ButtonPesquisarClick(Sender: TObject);
+    procedure ButtonExcluirItemClick(Sender: TObject);
+    procedure ButtonAlterarItemClick(Sender: TObject);
+    procedure ButtonInserirClick(Sender: TObject);
+    procedure ButtonNovoClick(Sender: TObject);
   private
-    procedure CarregarLookups;
     procedure Pesquisar;
+    procedure CalcularValorTotal;
   public
     { Public declarations }
   end;
@@ -56,6 +65,8 @@ implementation
 
 {$R *.dfm}
 
+uses uFormCadVendaItem;
+
 procedure TFormCadVenda.Pesquisar;
 begin
   FFiltrosSQL := '';
@@ -65,11 +76,12 @@ begin
   FecharFiltro;
 end;
 
-procedure TFormCadVenda.ButtonExcluirClick(Sender: TObject);
+procedure TFormCadVenda.Button4Click(Sender: TObject);
 begin
-  try
+  inherited;
+   try
     ACBrCEP.WebService := wsViaCEP;
-    ACBrCEP.BuscarPorCEP(DBEditCEP.Text); // Ex: '01001-000'
+    ACBrCEP.BuscarPorCEP(trim(DBEditCEP.Text));
 
     if ACBrCEP.Enderecos.Count > 0 then
     begin
@@ -87,11 +99,93 @@ begin
   end;
 end;
 
+procedure TFormCadVenda.ButtonAlterarItemClick(Sender: TObject);
+var
+  AFormCad: TFormCadVendaItem;
+begin
+  AFormCad := TFormCadVendaItem.CreateAlterar(self, FconnectionCad , DsItems);
+  try
+    AFormCad.ShowModal;
+  finally
+    AFormCad.Free;
+  end;
+
+  DsItems.dataset.post;
+  CalcularValorTotal
+end;
+
+procedure TFormCadVenda.ButtonExcluirItemClick(Sender: TObject);
+begin
+  inherited;
+  DsItems.dataset.Edit;
+  DsItems.dataset.Delete;
+  CalcularValorTotal;
+end;
+
+procedure TFormCadVenda.ButtonInserirClick(Sender: TObject);
+var
+  AFormCad: TFormCadVendaItem;
+begin
+  AFormCad := TFormCadVendaItem.CreateInserir(self, FconnectionCad , DsItems);
+  try
+    AFormCad.ShowModal;
+  finally
+    AFormCad.Free;
+  end;
+
+  DsItems.dataset.post;
+  CalcularValorTotal;
+end;
+
+procedure TFormCadVenda.ButtonNovoClick(Sender: TObject);
+begin
+  FDMCadbase.FGeradorNovoCod := 'GEN_VENDA_ID';
+  FDMCadbase.Fconnection := FconnectionCad;
+  inherited;
+end;
+
+procedure TFormCadVenda.ButtonPesquisarClick(Sender: TObject);
+begin
+  Pesquisar;
+  inherited;
+end;
+
 procedure TFormCadVenda.ButtonSalvarClick(Sender: TObject);
 begin
   if not(FDMCadBase.CdsCad.FieldByName('DATA_VENDA').IsNull) then
-      FDMCadBase.CdsCad.FieldByName('DATA_VENDA').AsDateTime := DateTimePicker2.Date;
+  begin
+    FDMCadBase.CdsCad.Edit;
+    FDMCadBase.CdsCad.FieldByName('DATA_VENDA').AsDateTime := DateTimePicker2.Date;
+    FDMCadBase.CdsCad.Post;
+  end;
+
   inherited;
+
+  if not(FDMCadbase.CdsCadItems.IsEmpty) then
+  begin
+    FDMCadBase.CdsCad.Edit;
+    FDMCadBase.SalvaDadosItem;
+  end;
+end;
+
+procedure TFormCadVenda.CalcularValorTotal;
+var
+  AValorTotalVenda: double;
+begin
+  if (DsItems.DataSet.IsEmpty) then
+    Exit;
+
+  AValorTotalVenda := 0;
+
+  DsItems.DataSet.First;
+  while not(DsItems.DataSet.Eof) do
+  begin
+    AValorTotalVenda := AValorTotalVenda + DsItems.DataSet.FieldByName('VALOR_TOTAL').AsFloat;
+    DsItems.DataSet.Next;
+  end;
+
+  DsCad.DataSet.edit;
+  DsCad.DataSet.FieldByName('VALOR_TOTAL').AsFloat := AValorTotalVenda;
 end;
 
 procedure TFormCadVenda.FormCreate(Sender: TObject);
@@ -99,8 +193,6 @@ begin
   FGeradorNovoCod := 'GEN_VENDA_ID';
   FSQL := 'SELECT *  ' +
           '   FROM VENDA';
-
-  CarregarLookups;
   inherited;
 end;
 
@@ -110,22 +202,15 @@ begin
   if (not FDMCadBase.CdsCad.FieldByName('DATA_VENDA').IsNull) then
     DateTimePicker2.Date := FDMCadBase.CdsCad.FieldByName('DATA_VENDA').AsDateTime
   else
+  begin
     DateTimePicker2.Date := Now;
-end;
 
-procedure TFormCadVenda.CarregarLookups;
-begin
-//  if (Fconnection = nil) then
-//    ShowMessage('Erro. Verifique os dados de conexão com o banco');
-//  try
-//    QueryPessoa.Close;
-//    QueryPessoa.Connection := Fconnection;
-//    QueryPessoa.SQL.Text := 'SELECT * FROM PESSOA ';
-//    QueryPessoa.Open;
-//  except
-//    on E: Exception do
-//      ShowMessage('Erro ao executar SQL: ' + E.Message);
-//  end;
+    FDMCadBase.CdsCad.Edit;
+    FDMCadBase.CdsCad.FieldByName('DATA_VENDA').AsDateTime := Now;
+  end;
+
+  FDMCadBase.ExecutarSQLItems(FconnectionCad);
+  DsItems.DataSet := FDMCadbase.CdsCadItems;
 end;
 
 procedure TFormCadVenda.EditPesquisaKeyPress(Sender: TObject; var Key: Char);

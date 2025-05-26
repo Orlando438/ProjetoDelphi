@@ -5,33 +5,46 @@ object DMCadBase: TDMCadBase
     Aggregates = <>
     Params = <>
     ProviderName = 'DataSetProvider'
+    OnNewRecord = CdsCadNewRecord
     Left = 368
     Top = 86
-  end
-  object QueryCad: TFDQuery
-    ChangeAlertName = 'Query'
-    Left = 200
-    Top = 87
   end
   object DataSetProvider: TDataSetProvider
     DataSet = QueryCad
     Left = 288
     Top = 88
   end
-  object FDPhysFBDriverLink: TFDPhysFBDriverLink
-    VendorLib = 'C:\Program Files\Firebird\Firebird_5_0\fbclient.dll'
-    Left = 96
-    Top = 96
+  object Connection: TSQLConnection
+    LoadParamsOnConnect = True
+    LoginPrompt = False
+    Left = 424
+    Top = 264
   end
-  object FDGUIxWaitCursor: TFDGUIxWaitCursor
-    Provider = 'Forms'
-    Left = 104
-    Top = 192
-  end
-  object Connection: TFDConnection
-    Params.Strings = (
-      'ConnectionDef=Connection')
-    Left = 440
+  object QueryCad: TSQLQuery
+    Params = <>
+    Left = 184
     Top = 88
+  end
+  object CdsCadItems: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'DpsCadItem'
+    Left = 368
+    Top = 158
+  end
+  object DpsCadItem: TDataSetProvider
+    DataSet = QueryCadItems
+    Left = 288
+    Top = 160
+  end
+  object QueryCadItems: TSQLQuery
+    Params = <>
+    Left = 184
+    Top = 160
+  end
+  object DsCad: TDataSource
+    DataSet = CdsCad
+    Left = 88
+    Top = 96
   end
 end

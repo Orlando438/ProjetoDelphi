@@ -104,24 +104,31 @@
         <DCCReference Include="Base\uDMCadBase.pas">
             <Form>DMCadBase</Form>
         </DCCReference>
-        <DCCReference Include="Cadastro\uFormCadPessoa.pas">
-            <Form>FormCadPessoa</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="uConstante.pas"/>
         <DCCReference Include="uFormMenu.pas">
             <Form>FormMenu</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="Cadastro\uFormCadCarro.pas">
-            <Form>FormCadCarro</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Cadastro\uFormCadVenda.pas">
             <Form>FormCadVenda</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Base\uDBEditLookup.pas"/>
+        <DCCReference Include="Cadastro\uFormCadItem.pas">
+            <Form>FormCadItem</Form>
+        </DCCReference>
+        <DCCReference Include="Cadastro\uFormCadVendaItem.pas">
+            <Form>FormCadVendaItem</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Base\uProduto.pas"/>
+        <DCCReference Include="Base\uFormRelatorioVenda.pas">
+            <Form>FormRelatorioVenda</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Cadastro\uFormRel.pas">
+            <Form>FormRel</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
