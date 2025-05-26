@@ -103,6 +103,12 @@ procedure TFormCadVenda.ButtonAlterarItemClick(Sender: TObject);
 var
   AFormCad: TFormCadVendaItem;
 begin
+  if (DsItems.DataSet.IsEmpty) then
+  begin
+    ShowMessage('Sem dados para alterar');
+    Abort;
+  end;
+
   AFormCad := TFormCadVendaItem.CreateAlterar(self, FconnectionCad , DsItems);
   try
     AFormCad.ShowModal;
@@ -117,6 +123,12 @@ end;
 procedure TFormCadVenda.ButtonExcluirItemClick(Sender: TObject);
 begin
   inherited;
+  if (DsItems.DataSet.IsEmpty) then
+  begin
+    ShowMessage('Sem dados para excluir');
+    Abort;
+  end;
+
   DsItems.dataset.Edit;
   DsItems.dataset.Delete;
   CalcularValorTotal;

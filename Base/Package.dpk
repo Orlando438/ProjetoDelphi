@@ -35,6 +35,5 @@ requires
   vcldb;
 
 contains
-  uDBEditLookup in 'uDBEditLookup.pas';
 
 end.

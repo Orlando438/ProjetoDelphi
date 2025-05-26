@@ -112,7 +112,6 @@ begin
   FDMCadbase.CdsCad.DisableControls;
   FDMCadbase.CdsCad.Append;
   FDMCadbase.CdsCad.EnableControls;
-  //FDMCadbase.CdsCad.FieldByName('ID').AsInteger := FDMCadbase.GetNovoCod(FGeradorNovoCod, Fconnection);
 end;
 
 procedure TFormCadBase.ButtonPesquisarClick(Sender: TObject);
@@ -153,6 +152,7 @@ begin
     Exit;
 
   try
+    FDMCadbase.CdsCad.Edit;
     FDMCadbase.CdsCad.Post;
     AQtdErros := FDMCadbase.CdsCad.ApplyUpdates(0);
 

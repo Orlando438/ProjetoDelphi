@@ -17,6 +17,10 @@ type
     RLDetailGrid1: TRLDetailGrid;
     RLDBText1: TRLDBText;
     RLDBText2: TRLDBText;
+    RLLabel2: TRLLabel;
+    RLLabel3: TRLLabel;
+    RLDBText3: TRLDBText;
+    RLLabel4: TRLLabel;
     RLLabel1: TRLLabel;
   private
     Fconnection: TSQLConnection;

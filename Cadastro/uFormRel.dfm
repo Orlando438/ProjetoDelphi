@@ -28,10 +28,10 @@ object FormRel: TFormRel
       Left = 38
       Top = 38
       Width = 718
-      Height = 67
+      Height = 91
       object RLDBText1: TRLDBText
-        Left = 18
-        Top = 37
+        Left = 26
+        Top = 61
         Width = 103
         Height = 16
         DataField = 'NOME_CLIENTE'
@@ -39,18 +39,48 @@ object FormRel: TFormRel
         Text = ''
       end
       object RLDBText2: TRLDBText
-        Left = 202
-        Top = 37
+        Left = 186
+        Top = 61
         Width = 90
         Height = 16
         DataField = 'DATA_VENDA'
         DataSource = FDataSource
         Text = ''
       end
+      object RLDBText3: TRLDBText
+        Left = 474
+        Top = 61
+        Width = 95
+        Height = 16
+        DataField = 'VALOR_TOTAL'
+        DataSource = FDataSource
+        Text = ''
+      end
+    end
+    object RLLabel2: TRLLabel
+      Left = 64
+      Top = 77
+      Width = 44
+      Height = 16
+      Caption = 'Cliente'
+    end
+    object RLLabel3: TRLLabel
+      Left = 224
+      Top = 77
+      Width = 68
+      Height = 16
+      Caption = 'Data venda'
+    end
+    object RLLabel4: TRLLabel
+      Left = 512
+      Top = 77
+      Width = 34
+      Height = 16
+      Caption = 'Valor'
     end
     object RLLabel1: TRLLabel
-      Left = 344
-      Top = 41
+      Left = 360
+      Top = 38
       Width = 48
       Height = 16
       Caption = 'Vendas'
