@@ -1,8 +1,6 @@
 # ========== Delphi Build ==========
 *.dcu
 *.exe
-*.dll
-*.bpl
 *.dcp
 *.drc
 *.map
