@@ -14,18 +14,18 @@ type
     Label1: TLabel;
     DBEditQuantidade: TDBEdit;
     Label2: TLabel;
-    DBEditValorUnitario: TDBEdit;
     Label3: TLabel;
     Label4: TLabel;
-    DBEditValorTotal: TDBEdit;
     EditDescricao: TEdit;
     Panel2: TPanel;
     ButtonCancelar: TButton;
     DataSource: TDataSource;
+    EditValorUni: TEdit;
+    EditValorTot: TEdit;
     procedure EditDescricaoKeyPress(Sender: TObject; var Key: Char);
     procedure ButtonCancelarClick(Sender: TObject);
-    procedure DBEditValorUnitarioExit(Sender: TObject);
-    procedure DBEditValorTotalExit(Sender: TObject);
+    procedure EditValorUniExit(Sender: TObject);
+    procedure DBEditQuantidadeExit(Sender: TObject);
   private
     Fconnection: TSQLConnection;
   public
@@ -68,31 +68,26 @@ end;
 constructor TFormCadVendaItem.CreateAlterar(AOwner: TComponent; AConnection: TCustomConnection; Data: TDataSource);
 var
   FDMCadbase: TDMCadBase;
+  AValor: Double;
 begin
   inherited Create(AOwner);
   Fconnection := TSQLConnection(AConnection);
   DataSource.DataSet := Data.DataSet;
   DataSource.DataSet.Edit;
-end;
 
+  AValor := DataSource.DataSet.FieldByName('VALOR_TOTAL').AsFloat;
+  DataSource.DataSet.FieldByName('VALOR_TOTAL').Text := FormatFloat('#,##0.00', AValor);
+  EditValorTot.Text := FormatFloat('#,##0.00', AValor);
 
-procedure TFormCadVendaItem.DBEditValorTotalExit(Sender: TObject);
-begin
-  DataSource.DataSet.Edit;
-  DataSource.DataSet.FieldByName('VALOR_TOTAL').AsCurrency := DataSource.DataSet.FieldByName('PRECO_UNITARIO').AsCurrency *
-                                                              DataSource.DataSet.FieldByName('QUANTIDADE').AsFloat;
-end;
-
-procedure TFormCadVendaItem.DBEditValorUnitarioExit(Sender: TObject);
-begin
-  DataSource.DataSet.Edit;
-  DataSource.DataSet.FieldByName('VALOR_TOTAL').AsCurrency := DataSource.DataSet.FieldByName('PRECO_UNITARIO').AsCurrency *
-                                                              DataSource.DataSet.FieldByName('QUANTIDADE').AsFloat;
+  AValor := DataSource.DataSet.FieldByName('PRECO_UNITARIO').AsFloat;
+  DataSource.DataSet.FieldByName('PRECO_UNITARIO').Text := FormatFloat('#,##0.00', AValor);
+  EditValorUni.Text := FormatFloat('#,##0.00', AValor);
 end;
 
 procedure TFormCadVendaItem.EditDescricaoKeyPress(Sender: TObject; var Key: Char);
 var
   ProdutoSelecionado: TItemVenda;
+  AValor: Double;
 begin
   if Key = #13 then
   begin
@@ -107,12 +102,46 @@ begin
         DataSource.DataSet.FieldByName('QUANTIDADE').AsFloat := 1;
         DataSource.DataSet.FieldByName('PRECO_UNITARIO').AsCurrency := ProdutoSelecionado.PrecoUnitario;
         DataSource.DataSet.FieldByName('VALOR_TOTAL').AsCurrency := ProdutoSelecionado.PrecoUnitario;
+
+        AValor := DataSource.DataSet.FieldByName('VALOR_TOTAL').AsFloat;
+        EditValorTot.Text  := FormatFloat('#,##0.00', AValor);
+
+        AValor := DataSource.DataSet.FieldByName('PRECO_UNITARIO').AsFloat;
+        EditValorUni.Text  := FormatFloat('#,##0.00', AValor);
       end;
     finally
       ProdutoSelecionado.Free;
       FormCadItem.Free;
     end;
   end;
+end;
+
+procedure TFormCadVendaItem.DBEditQuantidadeExit(Sender: TObject);
+var
+  AValor: Double;
+begin
+  DataSource.DataSet.Edit;
+  DataSource.DataSet.FieldByName('VALOR_TOTAL').AsCurrency := StrToFloat(EditValorUni.Text) *
+                                                              StrToFloat(DBEditQuantidade.Text);
+
+  AValor := DataSource.DataSet.FieldByName('VALOR_TOTAL').AsFloat;
+  DataSource.DataSet.FieldByName('VALOR_TOTAL').Text := FormatFloat('#,##0.00', AValor);
+  EditValorTot.Text := FormatFloat('#,##0.00', AValor);
+end;
+
+
+procedure TFormCadVendaItem.EditValorUniExit(Sender: TObject);
+var
+  AValor: Double;
+begin
+  DataSource.DataSet.Edit;
+  DataSource.DataSet.FieldByName('VALOR_TOTAL').AsCurrency := StrToFloat(EditValorUni.Text) *
+                                                              StrToFloat(DBEditQuantidade.Text);
+
+  AValor := DataSource.DataSet.FieldByName('VALOR_TOTAL').AsFloat;
+  DataSource.DataSet.FieldByName('VALOR_TOTAL').Text := FormatFloat('#,##0.00', AValor);
+  EditValorUni.Text := FormatFloat('#,##0.00', StrToFloat(EditValorUni.Text));
+  EditValorTot.Text := FormatFloat('#,##0.00', AValor);
 end;
 
 end.

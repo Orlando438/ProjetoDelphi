@@ -1,4 +1,4 @@
-﻿inherited FormCadVenda: TFormCadVenda
+inherited FormCadVenda: TFormCadVenda
   Caption = 'Vendas'
   ClientHeight = 557
   ClientWidth = 769
@@ -77,10 +77,42 @@
       end
       object Label9: TLabel [4]
         Left = 22
-        Top = 290
+        Top = 255
         Width = 53
         Height = 15
         Caption = 'Valor total'
+        Enabled = False
+      end
+      object Label5: TLabel [5]
+        Left = 55
+        Top = 138
+        Width = 20
+        Height = 15
+        Caption = 'Rua'
+      end
+      object Label6: TLabel [6]
+        Left = 44
+        Top = 167
+        Width = 31
+        Height = 15
+        Alignment = taRightJustify
+        Caption = 'Bairro'
+      end
+      object Label7: TLabel [7]
+        Left = 38
+        Top = 196
+        Width = 37
+        Height = 15
+        Alignment = taRightJustify
+        Caption = 'Cidade'
+      end
+      object Label8: TLabel [8]
+        Left = 40
+        Top = 225
+        Width = 35
+        Height = 15
+        Alignment = taRightJustify
+        Caption = 'Estado'
       end
       inherited DBEditDescricao: TDBEdit
         Left = 361
@@ -120,98 +152,21 @@
         DataSource = DsCad
         TabOrder = 4
       end
-      object Endereço: TGroupBox
-        Left = 81
-        Top = 132
-        Width = 237
-        Height = 149
-        Caption = 'Endere'#231'o'
-        TabOrder = 5
-        object Label5: TLabel
-          Left = 26
-          Top = 26
-          Width = 20
-          Height = 15
-          Caption = 'Rua'
-        end
-        object Label6: TLabel
-          Left = 15
-          Top = 55
-          Width = 31
-          Height = 15
-          Alignment = taRightJustify
-          Caption = 'Bairro'
-        end
-        object Label7: TLabel
-          Left = 9
-          Top = 84
-          Width = 37
-          Height = 15
-          Alignment = taRightJustify
-          Caption = 'Cidade'
-        end
-        object Label8: TLabel
-          Left = 11
-          Top = 113
-          Width = 35
-          Height = 15
-          Alignment = taRightJustify
-          Caption = 'Estado'
-        end
-        object DBEditRua: TDBEdit
-          Left = 52
-          Top = 23
-          Width = 145
-          Height = 23
-          DataField = 'RUA'
-          DataSource = DsCad
-          TabOrder = 0
-        end
-        object DBEditBairro: TDBEdit
-          Left = 52
-          Top = 52
-          Width = 145
-          Height = 23
-          DataField = 'BAIRRO'
-          DataSource = DsCad
-          TabOrder = 1
-        end
-        object DBEditCidade: TDBEdit
-          Left = 52
-          Top = 81
-          Width = 145
-          Height = 23
-          DataField = 'CIDADE'
-          DataSource = DsCad
-          TabOrder = 2
-        end
-        object DBEditEstado: TDBEdit
-          Left = 52
-          Top = 110
-          Width = 145
-          Height = 23
-          DataField = 'ESTADO'
-          DataSource = DsCad
-          TabOrder = 3
-          StyleName = 'Windows'
-        end
-      end
       object Panel1: TPanel
         Left = 0
-        Top = 320
+        Top = 280
         Width = 761
-        Height = 173
+        Height = 213
         Align = alBottom
-        TabOrder = 6
-        ExplicitTop = 319
-        ExplicitWidth = 757
+        TabOrder = 5
         object Panel2: TPanel
           Left = 1
-          Top = 143
+          Top = 183
           Width = 759
           Height = 29
           Align = alBottom
           TabOrder = 0
+          ExplicitTop = 143
           ExplicitWidth = 755
           object ButtonInserir: TButton
             Left = 1
@@ -234,7 +189,6 @@
             DisabledImageName = 'ButtonAlterar'
             TabOrder = 1
             OnClick = ButtonAlterarItemClick
-            ExplicitLeft = 93
           end
           object ButtonExcluirItem: TButton
             Left = 173
@@ -253,7 +207,7 @@
           Left = 1
           Top = 1
           Width = 759
-          Height = 142
+          Height = 182
           Align = alClient
           DataSource = DsItems
           TabOrder = 1
@@ -295,17 +249,55 @@
         Cancel = True
         Caption = 'Buscar'
         DisabledImageName = 'Button'
-        TabOrder = 7
+        TabOrder = 6
         OnClick = Button4Click
       end
-      object DBEditValorTotal: TDBEdit
+      object DBEditRua: TDBEdit
         Left = 81
-        Top = 287
+        Top = 135
         Width = 145
         Height = 23
-        DataField = 'VALOR_TOTAL'
+        DataField = 'RUA'
+        DataSource = DsCad
+        TabOrder = 7
+      end
+      object DBEditBairro: TDBEdit
+        Left = 81
+        Top = 164
+        Width = 145
+        Height = 23
+        DataField = 'BAIRRO'
         DataSource = DsCad
         TabOrder = 8
+      end
+      object DBEditCidade: TDBEdit
+        Left = 81
+        Top = 193
+        Width = 145
+        Height = 23
+        DataField = 'CIDADE'
+        DataSource = DsCad
+        TabOrder = 9
+      end
+      object DBEditEstado: TDBEdit
+        Left = 81
+        Top = 222
+        Width = 145
+        Height = 23
+        DataField = 'ESTADO'
+        DataSource = DsCad
+        TabOrder = 10
+        StyleName = 'Windows'
+      end
+      object EditValor: TEdit
+        Left = 81
+        Top = 251
+        Width = 145
+        Height = 23
+        Enabled = False
+        TabOrder = 11
+        Text = 'EditValor'
+        OnExit = EditValorExit
       end
     end
   end
@@ -314,6 +306,14 @@
     Width = 769
     ExplicitTop = 522
     ExplicitWidth = 765
+    inherited ButtonSalvar: TButton
+      Left = 687
+      ExplicitLeft = 687
+    end
+    inherited ButtonCancelar: TButton
+      Left = 599
+      ExplicitLeft = 599
+    end
   end
   inherited DsCad: TDataSource
     Left = 532
@@ -345,5 +345,10 @@
     Params = <>
     Left = 620
     Top = 353
+    object CdsItemsVALOR_TOTAL: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'VALOR_TOTAL'
+      Calculated = True
+    end
   end
 end

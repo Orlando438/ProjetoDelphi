@@ -20,15 +20,6 @@ type
     DBEdit1: TDBEdit;
     DBEditCEP: TDBEdit;
     Label4: TLabel;
-    Endereço: TGroupBox;
-    DBEditRua: TDBEdit;
-    Label5: TLabel;
-    DBEditBairro: TDBEdit;
-    Label6: TLabel;
-    DBEditCidade: TDBEdit;
-    Label7: TLabel;
-    DBEditEstado: TDBEdit;
-    Label8: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
     DBGrid2: TDBGrid;
@@ -39,8 +30,17 @@ type
     ACBrCEP: TACBrCEP;
     DsItems: TDataSource;
     CdsItems: TClientDataSet;
-    DBEditValorTotal: TDBEdit;
     Label9: TLabel;
+    DBEditRua: TDBEdit;
+    Label5: TLabel;
+    DBEditBairro: TDBEdit;
+    Label6: TLabel;
+    DBEditCidade: TDBEdit;
+    Label7: TLabel;
+    DBEditEstado: TDBEdit;
+    Label8: TLabel;
+    EditValor: TEdit;
+    CdsItemsVALOR_TOTAL: TFloatField;
     procedure FormCreate(Sender: TObject);
     procedure ButtonSalvarClick(Sender: TObject);
     procedure TabSheetCadastroShow(Sender: TObject);
@@ -51,6 +51,7 @@ type
     procedure ButtonAlterarItemClick(Sender: TObject);
     procedure ButtonInserirClick(Sender: TObject);
     procedure ButtonNovoClick(Sender: TObject);
+    procedure EditValorExit(Sender: TObject);
   private
     procedure Pesquisar;
     procedure CalcularValorTotal;
@@ -154,6 +155,7 @@ begin
   FDMCadbase.FGeradorNovoCod := 'GEN_VENDA_ID';
   FDMCadbase.Fconnection := FconnectionCad;
   inherited;
+  EditValor.Text := '0';
 end;
 
 procedure TFormCadVenda.ButtonPesquisarClick(Sender: TObject);
@@ -163,14 +165,17 @@ begin
 end;
 
 procedure TFormCadVenda.ButtonSalvarClick(Sender: TObject);
+var
+  AValor: Double;
 begin
+  FDMCadBase.CdsCad.Edit;
+
   if not(FDMCadBase.CdsCad.FieldByName('DATA_VENDA').IsNull) then
   begin
-    FDMCadBase.CdsCad.Edit;
     FDMCadBase.CdsCad.FieldByName('DATA_VENDA').AsDateTime := DateTimePicker2.Date;
-    FDMCadBase.CdsCad.Post;
   end;
 
+  FDMCadBase.CdsCad.Post;
   inherited;
 
   if not(FDMCadbase.CdsCadItems.IsEmpty) then
@@ -197,7 +202,8 @@ begin
   end;
 
   DsCad.DataSet.edit;
-  DsCad.DataSet.FieldByName('VALOR_TOTAL').AsFloat := AValorTotalVenda;
+  DsCad.DataSet.FieldByName('VALOR_TOTAL').Text := FormatFloat('#,##0.00', AValorTotalVenda);
+  EditValor.Text := FormatFloat('#,##0.00', AValorTotalVenda);
 end;
 
 procedure TFormCadVenda.FormCreate(Sender: TObject);
@@ -206,6 +212,7 @@ begin
   FSQL := 'SELECT *  ' +
           '   FROM VENDA';
   inherited;
+  CdsItemsVALOR_TOTAL.DisplayFormat := '#,##0.00';
 end;
 
 procedure TFormCadVenda.TabSheetCadastroShow(Sender: TObject);
@@ -215,14 +222,13 @@ begin
     DateTimePicker2.Date := FDMCadBase.CdsCad.FieldByName('DATA_VENDA').AsDateTime
   else
   begin
-    DateTimePicker2.Date := Now;
-
     FDMCadBase.CdsCad.Edit;
     FDMCadBase.CdsCad.FieldByName('DATA_VENDA').AsDateTime := Now;
   end;
 
   FDMCadBase.ExecutarSQLItems(FconnectionCad);
   DsItems.DataSet := FDMCadbase.CdsCadItems;
+  EditValor.Text := FormatFloat('#,##0.00', DsCad.DataSet.FieldByName('VALOR_TOTAL').AsFloat);
 end;
 
 procedure TFormCadVenda.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
@@ -231,6 +237,14 @@ begin
     Pesquisar;
 
   inherited;
+end;
+
+procedure TFormCadVenda.EditValorExit(Sender: TObject);
+var
+  valor: Double;
+begin
+  if TryStrToFloat(StringReplace(EditValor.Text, ',', '.', [rfReplaceAll]), valor) then
+    EditValor.Text := FormatFloat('#,##0.00', valor);
 end;
 
 end.

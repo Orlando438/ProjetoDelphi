@@ -47,15 +47,6 @@ object FormRel: TFormRel
         DataSource = FDataSource
         Text = ''
       end
-      object RLDBText3: TRLDBText
-        Left = 474
-        Top = 61
-        Width = 95
-        Height = 16
-        DataField = 'VALOR_TOTAL'
-        DataSource = FDataSource
-        Text = ''
-      end
     end
     object RLLabel2: TRLLabel
       Left = 64
@@ -70,13 +61,6 @@ object FormRel: TFormRel
       Width = 68
       Height = 16
       Caption = 'Data venda'
-    end
-    object RLLabel4: TRLLabel
-      Left = 512
-      Top = 77
-      Width = 34
-      Height = 16
-      Caption = 'Valor'
     end
     object RLLabel1: TRLLabel
       Left = 360

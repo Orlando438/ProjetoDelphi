@@ -56,7 +56,7 @@ object FormCadVendaItem: TFormCadVendaItem
       DataField = 'PRODUTO_ID'
       DataSource = DataSource
       Enabled = False
-      TabOrder = 4
+      TabOrder = 2
     end
     object DBEditQuantidade: TDBEdit
       Left = 116
@@ -66,26 +66,7 @@ object FormCadVendaItem: TFormCadVendaItem
       DataField = 'QUANTIDADE'
       DataSource = DataSource
       TabOrder = 1
-    end
-    object DBEditValorUnitario: TDBEdit
-      Left = 116
-      Top = 82
-      Width = 121
-      Height = 23
-      DataField = 'PRECO_UNITARIO'
-      DataSource = DataSource
-      TabOrder = 2
-      OnExit = DBEditValorUnitarioExit
-    end
-    object DBEditValorTotal: TDBEdit
-      Left = 116
-      Top = 111
-      Width = 121
-      Height = 23
-      DataField = 'VALOR_TOTAL'
-      DataSource = DataSource
-      TabOrder = 3
-      OnExit = DBEditValorTotalExit
+      OnExit = DBEditQuantidadeExit
     end
     object EditDescricao: TEdit
       Left = 167
@@ -101,7 +82,7 @@ object FormCadVendaItem: TFormCadVendaItem
       Width = 475
       Height = 33
       Align = alBottom
-      TabOrder = 5
+      TabOrder = 3
       ExplicitTop = 173
       ExplicitWidth = 471
       object ButtonCancelar: TButton
@@ -117,9 +98,24 @@ object FormCadVendaItem: TFormCadVendaItem
         ExplicitLeft = 395
       end
     end
+    object EditValorUni: TEdit
+      Left = 116
+      Top = 82
+      Width = 121
+      Height = 23
+      TabOrder = 4
+      OnExit = EditValorUniExit
+    end
+    object EditValorTot: TEdit
+      Left = 116
+      Top = 111
+      Width = 121
+      Height = 23
+      TabOrder = 5
+    end
   end
   object DataSource: TDataSource
-    Left = 344
+    Left = 400
     Top = 64
   end
 end
