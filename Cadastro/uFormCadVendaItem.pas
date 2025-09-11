@@ -5,7 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask,
-  Vcl.DBCtrls, Data.DB, Data.SqlExpr, uProduto;
+  Vcl.DBCtrls, Data.DB, Data.SqlExpr, uProduto, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
+  FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
+  FireDAC.VCLUI.Wait, FireDAC.Comp.Client;
 
 type
   TFormCadVendaItem = class(TForm)
@@ -20,17 +23,17 @@ type
     Panel2: TPanel;
     ButtonCancelar: TButton;
     DataSource: TDataSource;
-    EditValorUni: TEdit;
-    EditValorTot: TEdit;
+    DbEditValorTot: TDBEdit;
+    DBEditValorUni: TDBEdit;
     procedure EditDescricaoKeyPress(Sender: TObject; var Key: Char);
     procedure ButtonCancelarClick(Sender: TObject);
     procedure EditValorUniExit(Sender: TObject);
     procedure DBEditQuantidadeExit(Sender: TObject);
   private
-    Fconnection: TSQLConnection;
+    Fconnection: TFDConnection;
   public
-    constructor CreateInserir(AOwner: TComponent; AConnection: TCustomConnection; Data: TDataSource); reintroduce;
-    constructor CreateAlterar(AOwner: TComponent; AConnection: TCustomConnection; Data: TDataSource); reintroduce;
+    constructor CreateInserir(AOwner: TComponent; AConnection: TFDConnection; Data: TDataSource); reintroduce;
+    constructor CreateAlterar(AOwner: TComponent; AConnection: TFDConnection; Data: TDataSource); reintroduce;
   end;
 
 var
@@ -47,41 +50,42 @@ begin
   Close;
 end;
 
-constructor TFormCadVendaItem.CreateInserir(AOwner: TComponent; AConnection: TCustomConnection; Data: TDataSource);
+constructor TFormCadVendaItem.CreateInserir(AOwner: TComponent; AConnection: TFDConnection; Data: TDataSource);
 var
   FDMCadbase: TDMCadBase;
 begin
   inherited Create(AOwner);
-  Fconnection := TSQLConnection(AConnection);
+  Fconnection := TFDConnection(AConnection);
 
   DataSource.DataSet := Data.DataSet;
   DataSource.DataSet.Append;
 
   FDMCadbase := TDMCadBase.Create(nil);
   try
-    DataSource.DataSet.FieldByName('ID').AsInteger := FDMCadbase.GetNovoCod('GEN_VENDAITEM_ID', Fconnection);
+    FDMCadbase.FConnection := Fconnection;
+    DataSource.DataSet.FieldByName('CD_VENDAITEM').AsInteger := FDMCadbase.GetNovoCod('vendaitem_seq');
   finally
     FDMCadbase.Free;
   end;
 end;
 
-constructor TFormCadVendaItem.CreateAlterar(AOwner: TComponent; AConnection: TCustomConnection; Data: TDataSource);
+constructor TFormCadVendaItem.CreateAlterar(AOwner: TComponent; AConnection: TFDConnection; Data: TDataSource);
 var
   FDMCadbase: TDMCadBase;
   AValor: Double;
 begin
   inherited Create(AOwner);
-  Fconnection := TSQLConnection(AConnection);
+  Fconnection := AConnection;
   DataSource.DataSet := Data.DataSet;
   DataSource.DataSet.Edit;
 
-  AValor := DataSource.DataSet.FieldByName('VALOR_TOTAL').AsFloat;
-  DataSource.DataSet.FieldByName('VALOR_TOTAL').Text := FormatFloat('#,##0.00', AValor);
-  EditValorTot.Text := FormatFloat('#,##0.00', AValor);
+  AValor := DataSource.DataSet.FieldByName('VL_TOTAL').AsFloat;
+  DataSource.DataSet.FieldByName('VL_TOTAL').Text := FormatFloat('#,##0.00', AValor);
+  DbEditValorTot.Text := FormatFloat('#,##0.00', AValor);
 
-  AValor := DataSource.DataSet.FieldByName('PRECO_UNITARIO').AsFloat;
-  DataSource.DataSet.FieldByName('PRECO_UNITARIO').Text := FormatFloat('#,##0.00', AValor);
-  EditValorUni.Text := FormatFloat('#,##0.00', AValor);
+  AValor := DataSource.DataSet.FieldByName('VL_UNITARIO').AsFloat;
+  DataSource.DataSet.FieldByName('VL_UNITARIO').Text := FormatFloat('#,##0.00', AValor);
+  DBEditValorUni.Text := FormatFloat('#,##0.00', AValor);
 end;
 
 procedure TFormCadVendaItem.EditDescricaoKeyPress(Sender: TObject; var Key: Char);
@@ -90,7 +94,7 @@ var
   AValor: Double;
 begin
   if Key = #13 then
-  begin
+   begin
     FormCadItem := TFormCadItem.Create(self, Fconnection);
     try
       ProdutoSelecionado := FormCadItem.SelecionarItem(EditDescricao.Text);
@@ -98,16 +102,16 @@ begin
       if Assigned(ProdutoSelecionado) then
       begin
         DataSource.DataSet.Edit;
-        DataSource.DataSet.FieldByName('PRODUTO_ID').AsInteger := ProdutoSelecionado.IDProduto;
-        DataSource.DataSet.FieldByName('QUANTIDADE').AsFloat := 1;
-        DataSource.DataSet.FieldByName('PRECO_UNITARIO').AsCurrency := ProdutoSelecionado.PrecoUnitario;
-        DataSource.DataSet.FieldByName('VALOR_TOTAL').AsCurrency := ProdutoSelecionado.PrecoUnitario;
+        DataSource.DataSet.FieldByName('CD_ITEM').AsInteger := ProdutoSelecionado.IDProduto;
+        DataSource.DataSet.FieldByName('QT_ITEM').AsFloat := 1;
+        DataSource.DataSet.FieldByName('VL_UNITARIO').AsFloat := ProdutoSelecionado.PrecoUnitario;
+        DataSource.DataSet.FieldByName('VL_TOTAL').AsFloat := ProdutoSelecionado.PrecoUnitario;
 
-        AValor := DataSource.DataSet.FieldByName('VALOR_TOTAL').AsFloat;
-        EditValorTot.Text  := FormatFloat('#,##0.00', AValor);
+        AValor := DataSource.DataSet.FieldByName('VL_TOTAL').AsFloat;
+        DbEditValorTot.Text  := FormatFloat('#,##0.00', AValor);
 
-        AValor := DataSource.DataSet.FieldByName('PRECO_UNITARIO').AsFloat;
-        EditValorUni.Text  := FormatFloat('#,##0.00', AValor);
+        AValor := DataSource.DataSet.FieldByName('VL_UNITARIO').AsFloat;
+        DBEditValorUni.Text  := FormatFloat('#,##0.00', AValor);
       end;
     finally
       ProdutoSelecionado.Free;
@@ -121,12 +125,12 @@ var
   AValor: Double;
 begin
   DataSource.DataSet.Edit;
-  DataSource.DataSet.FieldByName('VALOR_TOTAL').AsCurrency := StrToFloat(EditValorUni.Text) *
+  DataSource.DataSet.FieldByName('VALOR_TOTAL').AsCurrency := StrToFloat(DBEditValorUni.Text) *
                                                               StrToFloat(DBEditQuantidade.Text);
 
   AValor := DataSource.DataSet.FieldByName('VALOR_TOTAL').AsFloat;
   DataSource.DataSet.FieldByName('VALOR_TOTAL').Text := FormatFloat('#,##0.00', AValor);
-  EditValorTot.Text := FormatFloat('#,##0.00', AValor);
+  DbEditValorTot.Text := FormatFloat('#,##0.00', AValor);
 end;
 
 
@@ -135,13 +139,13 @@ var
   AValor: Double;
 begin
   DataSource.DataSet.Edit;
-  DataSource.DataSet.FieldByName('VALOR_TOTAL').AsCurrency := StrToFloat(EditValorUni.Text) *
+  DataSource.DataSet.FieldByName('VALOR_TOTAL').AsCurrency := StrToFloat(DBEditValorUni.Text) *
                                                               StrToFloat(DBEditQuantidade.Text);
 
   AValor := DataSource.DataSet.FieldByName('VALOR_TOTAL').AsFloat;
   DataSource.DataSet.FieldByName('VALOR_TOTAL').Text := FormatFloat('#,##0.00', AValor);
-  EditValorUni.Text := FormatFloat('#,##0.00', StrToFloat(EditValorUni.Text));
-  EditValorTot.Text := FormatFloat('#,##0.00', AValor);
+  DBEditValorUni.Text := FormatFloat('#,##0.00', StrToFloat(DBEditValorUni.Text));
+  DbEditValorTot.Text := FormatFloat('#,##0.00', AValor);
 end;
 
 end.

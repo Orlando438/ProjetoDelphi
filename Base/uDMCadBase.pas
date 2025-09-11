@@ -17,22 +17,23 @@ type
   TDMCadBase = class(TDataModule)
     CdsCad: TClientDataSet;
     DataSetProvider: TDataSetProvider;
-    Connection: TSQLConnection;
-    QueryCad: TSQLQuery;
     CdsCadItems: TClientDataSet;
     DpsCadItem: TDataSetProvider;
-    QueryCadItems: TSQLQuery;
     DsCad: TDataSource;
+    Connection: TFDConnection;
+    QueryCad: TFDQuery;
+    QueryCadItems: TFDQuery;
     procedure CdsCadNewRecord(DataSet: TDataSet);
   private
     FFiltroSQL: String;
   public
-    FConnection: TSQLConnection;
+    FConnection: TFDConnection;
     FGeradorNovoCod: String;
+    FCampoCodigo: String;
     FTextoEditPesquisa: String;
-    procedure ExecutarSQLBD(_ASQL, _AFiltro: String; _AConnection: TSQLConnection);
-    function GetNovoCod(_AGerador: String; _AConnection: TCustomConnection): Integer;
-    procedure ExecutarSQLItems(_AConnection: TSQLConnection);
+    procedure ExecutarSQLBD(_ASQL, _AFiltro: String; _AConnection: TFDConnection);
+    function GetNovoCod(_AGerador: String): Integer;
+    procedure ExecutarSQLItems(_AConnection: TFDConnection);
     procedure SalvaDadosItem;
   end;
 
@@ -45,14 +46,14 @@ implementation
 
 {$R *.dfm}
 
-function TDMCadBase.GetNovoCod(_AGerador: String; _AConnection: TCustomConnection): Integer;
+function TDMCadBase.GetNovoCod(_AGerador: String): Integer;
 var
-  AQuery: TSQLQuery;
+  AQuery: TFDQuery;
 begin
-  AQuery := TSQLQuery.Create(nil);
+  AQuery := TFDQuery.Create(nil);
   try
-    AQuery.SQLConnection := TSQLConnection(_AConnection);
-    AQuery.SQL.Text := 'SELECT NEXT VALUE FOR ' + _AGerador + ' AS ID FROM RDB$DATABASE';
+    AQuery.Connection := TFDConnection(FConnection);
+    AQuery.SQL.Text := 'SELECT nextval('+ QuotedStr(_AGerador) + ') AS ID ';
     AQuery.Open;
 
     if not(AQuery.IsEmpty) then
@@ -66,11 +67,17 @@ end;
 
 procedure TDMCadBase.CdsCadNewRecord(DataSet: TDataSet);
 begin
+  if (FCampoCodigo = EmptyStr) then
+  begin
+    ShowMessage('Campo codigo nao foi definido na ação do botão "novo"');
+    Abort;
+  end;
+
   DataSet.Edit;
-  DataSet.FieldByName('ID').AsInteger := GetNovoCod(FGeradorNovoCod, Fconnection);
+  DataSet.FieldByName(FCampoCodigo).AsInteger := GetNovoCod(FGeradorNovoCod);
 end;
 
-procedure TDMCadBase.ExecutarSQLBD(_ASQL, _AFiltro: String; _AConnection: TSQLConnection);
+procedure TDMCadBase.ExecutarSQLBD(_ASQL, _AFiltro: String; _AConnection: TFDConnection);
 begin
   if not Assigned(_AConnection) then
   begin
@@ -81,9 +88,9 @@ begin
   try
     Connection := _AConnection;
     Connection.Connected := True;
-    QueryCad.SQLConnection := Connection;
 
     CdsCad.Close;
+    QueryCad.Connection := Connection;
     QueryCad.SQL.Text := _ASQL + ' WHERE 1 = 1 ' + _AFiltro;
     CdsCad.Open;
   except
@@ -105,7 +112,7 @@ begin
   end;
 end;
 
-procedure TDMCadBase.ExecutarSQLItems(_AConnection: TSQLConnection);
+procedure TDMCadBase.ExecutarSQLItems(_AConnection: TFDConnection);
 begin
   if not Assigned(_AConnection) then
   begin
@@ -116,15 +123,20 @@ begin
   try
     Connection := _AConnection;
     Connection.Connected := True;
-    QueryCadItems.SQLConnection := Connection;
+
+    QueryCad.Connection := Connection;
+    QueryCadItems.Connection := Connection;
 
     CdsCadItems.Close;
     CdsCadItems.MasterSource := DsCad;
-    CdsCadItems.MasterFields := 'ID';
-    CdsCadItems.IndexFieldNames := 'VENDA_ID';
+    CdsCadItems.MasterFields := 'CD_VENDA';
+    CdsCadItems.IndexFieldNames := 'CD_VENDA';
 
-    QueryCadItems.SQL.Text := 'SELECT * FROM VENDA_ITEM WHERE VENDA_ID = :VENDA_ID';
-    QueryCadItems.ParamByName('VENDA_ID').AsInteger := DsCad.DataSet.FieldByName('ID').AsInteger;
+    QueryCadItems.SQL.Text := ' SELECT * ' +
+                              '    FROM VENDAITEM ' +
+                              '   WHERE CD_VENDA = :CD_VENDA';
+
+    QueryCadItems.ParamByName('CD_VENDA').AsInteger := DsCad.DataSet.FieldByName('CD_VENDA').AsInteger;
     CdsCadItems.Open;
   except
     on E: Exception do

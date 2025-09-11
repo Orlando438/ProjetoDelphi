@@ -14,44 +14,33 @@ uses
 type
   TFormCadVenda = class(TFormCadBase)
     Label3: TLabel;
-    DateTimePicker2: TDateTimePicker;
+    DataVenda: TDateTimePicker;
     QueryPessoa: TFDQuery;
     DataSourcePessoa: TDataSource;
     DBEdit1: TDBEdit;
-    DBEditCEP: TDBEdit;
-    Label4: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
     DBGrid2: TDBGrid;
     ButtonInserir: TButton;
     ButtonAlterarItem: TButton;
     ButtonExcluirItem: TButton;
-    Button4: TButton;
     ACBrCEP: TACBrCEP;
     DsItems: TDataSource;
     CdsItems: TClientDataSet;
     Label9: TLabel;
-    DBEditRua: TDBEdit;
-    Label5: TLabel;
-    DBEditBairro: TDBEdit;
-    Label6: TLabel;
-    DBEditCidade: TDBEdit;
-    Label7: TLabel;
-    DBEditEstado: TDBEdit;
-    Label8: TLabel;
-    EditValor: TEdit;
     CdsItemsVALOR_TOTAL: TFloatField;
+    DBEditValorTotal: TDBEdit;
+    DBEdit2: TDBEdit;
+    Label4: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure ButtonSalvarClick(Sender: TObject);
     procedure TabSheetCadastroShow(Sender: TObject);
     procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
-    procedure Button4Click(Sender: TObject);
     procedure ButtonPesquisarClick(Sender: TObject);
     procedure ButtonExcluirItemClick(Sender: TObject);
     procedure ButtonAlterarItemClick(Sender: TObject);
     procedure ButtonInserirClick(Sender: TObject);
     procedure ButtonNovoClick(Sender: TObject);
-    procedure EditValorExit(Sender: TObject);
   private
     procedure Pesquisar;
     procedure CalcularValorTotal;
@@ -71,33 +60,9 @@ uses uFormCadVendaItem;
 procedure TFormCadVenda.Pesquisar;
 begin
   FFiltrosSQL := '';
-  adicionarfiltros('VENDA.ID');
-  adicionarfiltros('VENDA.DATA_VENDA');
-  adicionarfiltros('VENDA.NOME_CLIENTE');
+  adicionarfiltros('VENDA.CD_VENDA');
+  adicionarfiltros('PESSOA.DS_PESSOA');
   FecharFiltro;
-end;
-
-procedure TFormCadVenda.Button4Click(Sender: TObject);
-begin
-  inherited;
-   try
-    ACBrCEP.WebService := wsViaCEP;
-    ACBrCEP.BuscarPorCEP(trim(DBEditCEP.Text));
-
-    if ACBrCEP.Enderecos.Count > 0 then
-    begin
-      DBEditRua.Text    := ACBrCEP.Enderecos[0].Tipo_Logradouro + ' ' + ACBrCEP.Enderecos[0].Logradouro;
-      DBEditBairro.Text := ACBrCEP.Enderecos[0].Bairro;
-      DBEditCidade.Text := ACBrCEP.Enderecos[0].Municipio;
-      DBEditEstado.Text := ACBrCEP.Enderecos[0].UF;
-    end
-    else
-      ShowMessage('CEP não encontrado.');
-
-  except
-    on E: Exception do
-      ShowMessage('Erro ao buscar CEP: ' + E.Message);
-  end;
 end;
 
 procedure TFormCadVenda.ButtonAlterarItemClick(Sender: TObject);
@@ -152,10 +117,11 @@ end;
 
 procedure TFormCadVenda.ButtonNovoClick(Sender: TObject);
 begin
-  FDMCadbase.FGeradorNovoCod := 'GEN_VENDA_ID';
   FDMCadbase.Fconnection := FconnectionCad;
+  FDMCadbase.FCampoCodigo := 'CD_VENDA';
+  FGeradorNovoCod := 'venda_seq';
   inherited;
-  EditValor.Text := '0';
+  DataVenda.Date := Now;
 end;
 
 procedure TFormCadVenda.ButtonPesquisarClick(Sender: TObject);
@@ -169,12 +135,7 @@ var
   AValor: Double;
 begin
   FDMCadBase.CdsCad.Edit;
-
-  if not(FDMCadBase.CdsCad.FieldByName('DATA_VENDA').IsNull) then
-  begin
-    FDMCadBase.CdsCad.FieldByName('DATA_VENDA').AsDateTime := DateTimePicker2.Date;
-  end;
-
+  FDMCadBase.CdsCad.FieldByName('DT_VENDA').AsDateTime := DataVenda.Date;
   FDMCadBase.CdsCad.Post;
   inherited;
 
@@ -197,20 +158,20 @@ begin
   DsItems.DataSet.First;
   while not(DsItems.DataSet.Eof) do
   begin
-    AValorTotalVenda := AValorTotalVenda + DsItems.DataSet.FieldByName('VALOR_TOTAL').AsFloat;
+    AValorTotalVenda := AValorTotalVenda + DsItems.DataSet.FieldByName('VL_TOTAL').AsFloat;
     DsItems.DataSet.Next;
   end;
 
-  DsCad.DataSet.edit;
-  DsCad.DataSet.FieldByName('VALOR_TOTAL').Text := FormatFloat('#,##0.00', AValorTotalVenda);
-  EditValor.Text := FormatFloat('#,##0.00', AValorTotalVenda);
+  TFloatField (DsCad.DataSet.FieldByName('VL_TOTAL')).DisplayFormat := '#,##0.00';
+  DsCad.DataSet.FieldByName('VL_TOTAL').AsFloat := Round(AValorTotalVenda);
 end;
 
 procedure TFormCadVenda.FormCreate(Sender: TObject);
 begin
-  FGeradorNovoCod := 'GEN_VENDA_ID';
-  FSQL := 'SELECT *  ' +
-          '   FROM VENDA';
+  FGeradorNovoCod := 'venda_seq';
+  FSQL := 'SELECT VENDA.*, PESSOA.DS_PESSOA  ' +
+          '   FROM VENDA' +
+          ' LEFT JOIN PESSOA ON PESSOA.CD_PESSOA = VENDA.CD_PESSOA ' ;
   inherited;
   CdsItemsVALOR_TOTAL.DisplayFormat := '#,##0.00';
 end;
@@ -218,17 +179,16 @@ end;
 procedure TFormCadVenda.TabSheetCadastroShow(Sender: TObject);
 begin
   inherited;
-  if (not FDMCadBase.CdsCad.FieldByName('DATA_VENDA').IsNull) then
-    DateTimePicker2.Date := FDMCadBase.CdsCad.FieldByName('DATA_VENDA').AsDateTime
+  if (not FDMCadBase.CdsCad.FieldByName('DT_VENDA').IsNull) then
+    DataVenda.Date := FDMCadBase.CdsCad.FieldByName('DT_VENDA').AsDateTime
   else
   begin
     FDMCadBase.CdsCad.Edit;
-    FDMCadBase.CdsCad.FieldByName('DATA_VENDA').AsDateTime := Now;
+    FDMCadBase.CdsCad.FieldByName('DT_VENDA').AsDateTime := Now;
   end;
 
   FDMCadBase.ExecutarSQLItems(FconnectionCad);
   DsItems.DataSet := FDMCadbase.CdsCadItems;
-  EditValor.Text := FormatFloat('#,##0.00', DsCad.DataSet.FieldByName('VALOR_TOTAL').AsFloat);
 end;
 
 procedure TFormCadVenda.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
@@ -237,14 +197,6 @@ begin
     Pesquisar;
 
   inherited;
-end;
-
-procedure TFormCadVenda.EditValorExit(Sender: TObject);
-var
-  valor: Double;
-begin
-  if TryStrToFloat(StringReplace(EditValor.Text, ',', '.', [rfReplaceAll]), valor) then
-    EditValor.Text := FormatFloat('#,##0.00', valor);
 end;
 
 end.

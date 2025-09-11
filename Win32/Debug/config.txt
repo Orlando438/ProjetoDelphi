@@ -1,0 +1,7 @@
+[BD]
+DriverID=FB
+Server=localhost
+Database=Empresa
+User_Name=postgres
+Password=1
+Port=5432

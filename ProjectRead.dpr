@@ -10,8 +10,8 @@ uses
   uFormCadItem in 'Cadastro\uFormCadItem.pas' {FormCadItem},
   uFormCadVendaItem in 'Cadastro\uFormCadVendaItem.pas' {FormCadVendaItem},
   uProduto in 'Base\uProduto.pas',
-  uFormRelatorioVenda in 'Base\uFormRelatorioVenda.pas' {FormRelatorioVenda},
-  uFormRel in 'Cadastro\uFormRel.pas' {FormRel};
+  uFormRelBase in 'Base\uFormRelBase.pas' {FormRelBase},
+  uDMRelBase in 'Base\uDMRelBase.pas' {DataModule1: TDataModule};
 
 {$R *.res}
 
@@ -20,7 +20,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFormMenu, FormMenu);
   Application.CreateForm(TFormMenu, FormMenu);
-  Application.CreateForm(TFormRelatorioVenda, FormRelatorioVenda);
-  Application.CreateForm(TFormRel, FormRel);
+  Application.CreateForm(TFormRelBase, FormRelBase);
+  Application.CreateForm(TDataModule1, DataModule1);
   Application.Run;
 end.

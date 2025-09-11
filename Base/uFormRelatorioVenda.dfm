@@ -1,27 +1,26 @@
-object FormRelatorioVenda: TFormRelatorioVenda
+object FormRelBase: TFormRelBase
   Left = 0
   Top = 0
-  Caption = 'Relat'#243'rio de venda'
-  ClientHeight = 139
-  ClientWidth = 455
+  Caption = 'Relat'#243'rio'
+  ClientHeight = 138
+  ClientWidth = 451
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  OnCreate = FormCreate
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 455
-    Height = 139
+    Width = 451
+    Height = 138
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 248
-    ExplicitTop = 120
-    ExplicitWidth = 185
-    ExplicitHeight = 41
+    ExplicitWidth = 447
+    ExplicitHeight = 137
     object Label1: TLabel
       Left = 9
       Top = 46
@@ -56,13 +55,15 @@ object FormRelatorioVenda: TFormRelatorioVenda
     end
     object Panel2: TPanel
       Left = 1
-      Top = 104
-      Width = 453
+      Top = 103
+      Width = 449
       Height = 34
       Align = alBottom
       TabOrder = 2
+      ExplicitTop = 102
+      ExplicitWidth = 445
       object ButtonImprimir: TButton
-        Left = 366
+        Left = 362
         Top = 1
         Width = 86
         Height = 32
@@ -72,8 +73,7 @@ object FormRelatorioVenda: TFormRelatorioVenda
         DisabledImageName = 'Button'
         TabOrder = 0
         OnClick = ButtonImprimirClick
-        ExplicitLeft = 173
-        ExplicitHeight = 27
+        ExplicitLeft = 358
       end
     end
   end

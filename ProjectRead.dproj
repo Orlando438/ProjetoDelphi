@@ -121,13 +121,13 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Base\uProduto.pas"/>
-        <DCCReference Include="Base\uFormRelatorioVenda.pas">
-            <Form>FormRelatorioVenda</Form>
-            <FormType>dfm</FormType>
+        <DCCReference Include="Base\uFormRelBase.pas">
+            <Form>FormRelBase</Form>
         </DCCReference>
-        <DCCReference Include="Cadastro\uFormRel.pas">
-            <Form>FormRel</Form>
+        <DCCReference Include="Base\uDMRelBase.pas">
+            <Form>DataModule1</Form>
             <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

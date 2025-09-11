@@ -1,14 +1,14 @@
-unit uFormRelatorioVenda;
+unit uFormRelBase;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls,
-  Data.DB, Data.SqlExpr, uFormRel;
+  Data.DB, Data.SqlExpr;
 
 type
-  TFormRelatorioVenda = class(TForm)
+  TFormRelBase = class(TForm)
     Panel1: TPanel;
     dtini: TDateTimePicker;
     Label1: TLabel;
@@ -17,34 +17,41 @@ type
     Panel2: TPanel;
     ButtonImprimir: TButton;
     procedure ButtonImprimirClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     Fconnection: TSQLConnection;
-    FormRel: TFormRel;
+    //FormRel: TFormRel;
   public
     constructor Create(AOwner: TComponent; AConnection: TCustomConnection);
   end;
 
 var
-  FormRelatorioVenda: TFormRelatorioVenda;
+  FormRelBase: TFormRelBase;
 
 implementation
 
 {$R *.dfm}
 
-procedure TFormRelatorioVenda.ButtonImprimirClick(Sender: TObject);
+procedure TFormRelBase.ButtonImprimirClick(Sender: TObject);
 begin
-  FormRel := TFormRel.Create(Self, Fconnection);
-  try
-    FormRel.CarregarRelatorio(dtini.Date, dtfim.Date);
-  finally
-    FormRel.Free;
-  end;
+//  FormRel := TFormRel.Create(Self, Fconnection);
+//  try
+//    FormRel.CarregarRelatorio(dtini.Date, dtfim.Date);
+//  finally
+//    FormRel.Free;
+//  end;
 end;
 
-constructor TFormRelatorioVenda.Create(AOwner: TComponent; AConnection: TCustomConnection);
+constructor TFormRelBase.Create(AOwner: TComponent; AConnection: TCustomConnection);
 begin
   inherited Create(AOwner);
   Fconnection := TSQLConnection(AConnection);
+end;
+
+procedure TFormRelBase.FormCreate(Sender: TObject);
+begin
+  dtini.Date := Now;
+  dtfim.Date := Now;
 end;
 
 end.

@@ -47,7 +47,7 @@ type
     FDMCadbase: TDMCadBase;
     FSQL: String;
     FFiltrosSQL: String;
-    FconnectionCad: TSQLConnection;
+    FconnectionCad: TFDConnection;
     FGeradorNovoCod: String;
     procedure AdicionarFiltros(_ACampo: String);
     procedure ExecutarSQL;
@@ -66,7 +66,7 @@ implementation
 constructor TFormCadBase.Create(AOwner: TComponent; AConnection: TCustomConnection);
 begin
   inherited Create(AOwner);
-  FconnectionCad := TSQLConnection(AConnection);
+  FconnectionCad := TFDConnection(AConnection);
 end;
 
 procedure TFormCadBase.Alterar;
@@ -105,13 +105,18 @@ end;
 
 procedure TFormCadBase.ButtonNovoClick(Sender: TObject);
 begin
-  TabSheetCadastro.Show;
+  if (FGeradorNovoCod = EmptyStr) then
+  begin
+    ShowMessage('Necessario definir o gerador de codigos na ação do botão novo');
+    Exit;
+  end
+  else
+    FDMCadbase.FGeradorNovoCod := FGeradorNovoCod;
 
-  FGeradorNovoCod := FGeradorNovoCod;
+  TabSheetCadastro.Show;
   FDMCadbase.Fconnection := FconnectionCad;
-  FDMCadbase.CdsCad.DisableControls;
   FDMCadbase.CdsCad.Append;
-  FDMCadbase.CdsCad.EnableControls;
+  FDMCadbase.CdsCad.FieldByName(FDMCadbase.FCampoCodigo).AsInteger := FDMCadbase.GetNovoCod('item_seq');
 end;
 
 procedure TFormCadBase.ButtonPesquisarClick(Sender: TObject);

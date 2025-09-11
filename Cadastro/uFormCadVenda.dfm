@@ -25,19 +25,19 @@ inherited FormCadVenda: TFormCadVenda
           Columns = <
             item
               Expanded = False
-              FieldName = 'ID'
+              FieldName = 'CD_VENDA'
               Title.Caption = 'C'#243'digo'
               Visible = True
             end
             item
               Expanded = False
-              FieldName = 'DATA_VENDA'
+              FieldName = 'DT_VENDA'
               Title.Caption = 'Data'
               Visible = True
             end
             item
               Expanded = False
-              FieldName = 'NOME_CLIENTE'
+              FieldName = 'DS_PESSOA'
               Title.Caption = 'Cliente'
               Width = 120
               Visible = True
@@ -68,51 +68,21 @@ inherited FormCadVenda: TFormCadVenda
         Height = 15
         Caption = 'Cliente'
       end
-      object Label4: TLabel [3]
-        Left = 54
-        Top = 106
-        Width = 21
-        Height = 15
-        Caption = 'CEP'
-      end
-      object Label9: TLabel [4]
+      object Label9: TLabel [3]
         Left = 22
-        Top = 255
+        Top = 107
         Width = 53
         Height = 15
         Caption = 'Valor total'
         Enabled = False
       end
-      object Label5: TLabel [5]
-        Left = 55
-        Top = 138
-        Width = 20
+      object Label4: TLabel [4]
+        Left = 17
+        Top = 135
+        Width = 58
         Height = 15
-        Caption = 'Rua'
-      end
-      object Label6: TLabel [6]
-        Left = 44
-        Top = 167
-        Width = 31
-        Height = 15
-        Alignment = taRightJustify
-        Caption = 'Bairro'
-      end
-      object Label7: TLabel [7]
-        Left = 38
-        Top = 196
-        Width = 37
-        Height = 15
-        Alignment = taRightJustify
-        Caption = 'Cidade'
-      end
-      object Label8: TLabel [8]
-        Left = 40
-        Top = 225
-        Width = 35
-        Height = 15
-        Alignment = taRightJustify
-        Caption = 'Estado'
+        Caption = 'Valor deco.'
+        Enabled = False
       end
       inherited DBEditDescricao: TDBEdit
         Left = 361
@@ -123,15 +93,16 @@ inherited FormCadVenda: TFormCadVenda
         ExplicitTop = 16
       end
       inherited DBEditCodigo: TDBEdit
-        DataField = 'ID'
+        DataField = 'CD_VENDA'
       end
-      object DateTimePicker2: TDateTimePicker
+      object DataVenda: TDateTimePicker
         Left = 81
         Top = 74
         Width = 145
         Height = 23
         Date = 45764.000000000000000000
         Time = 0.039194849538034760
+        ImeName = 'DateVenda'
         TabOrder = 2
       end
       object DBEdit1: TDBEdit
@@ -139,34 +110,26 @@ inherited FormCadVenda: TFormCadVenda
         Top = 45
         Width = 145
         Height = 23
-        DataField = 'NOME_CLIENTE'
+        DataField = 'DS_PESSOA'
         DataSource = DsCad
         TabOrder = 3
       end
-      object DBEditCEP: TDBEdit
-        Left = 81
-        Top = 103
-        Width = 145
-        Height = 23
-        DataField = 'CEP'
-        DataSource = DsCad
-        TabOrder = 4
-      end
       object Panel1: TPanel
         Left = 0
-        Top = 280
+        Top = 160
         Width = 761
-        Height = 213
+        Height = 333
         Align = alBottom
-        TabOrder = 5
+        TabOrder = 4
+        ExplicitTop = 159
+        ExplicitWidth = 757
         object Panel2: TPanel
           Left = 1
-          Top = 183
+          Top = 303
           Width = 759
           Height = 29
           Align = alBottom
           TabOrder = 0
-          ExplicitTop = 143
           ExplicitWidth = 755
           object ButtonInserir: TButton
             Left = 1
@@ -207,7 +170,7 @@ inherited FormCadVenda: TFormCadVenda
           Left = 1
           Top = 1
           Width = 759
-          Height = 182
+          Height = 302
           Align = alClient
           DataSource = DsItems
           TabOrder = 1
@@ -219,85 +182,44 @@ inherited FormCadVenda: TFormCadVenda
           Columns = <
             item
               Expanded = False
-              FieldName = 'PRODUTO_ID'
-              Title.Caption = 'cod. Item'
+              FieldName = 'CD_ITEM'
+              Title.Caption = 'C'#243'digo'
               Width = 90
               Visible = True
             end
             item
               Expanded = False
-              FieldName = 'QUANTIDADE'
+              FieldName = 'QT_ITEM'
               Title.Caption = 'Quantidade'
               Width = 90
               Visible = True
             end
             item
               Expanded = False
-              FieldName = 'VALOR_TOTAL'
+              FieldName = 'VL_TOTAL'
               Title.Caption = 'Valor total'
               Width = 90
               Visible = True
             end>
         end
       end
-      object Button4: TButton
-        Left = 232
-        Top = 104
-        Width = 86
-        Height = 22
-        Align = alCustom
-        Cancel = True
-        Caption = 'Buscar'
-        DisabledImageName = 'Button'
+      object DBEditValorTotal: TDBEdit
+        Left = 81
+        Top = 103
+        Width = 145
+        Height = 23
+        DataField = 'VL_TOTAL'
+        DataSource = DsCad
+        TabOrder = 5
+      end
+      object DBEdit2: TDBEdit
+        Left = 81
+        Top = 131
+        Width = 145
+        Height = 23
+        DataField = 'VL_DESCONTO'
+        DataSource = DsCad
         TabOrder = 6
-        OnClick = Button4Click
-      end
-      object DBEditRua: TDBEdit
-        Left = 81
-        Top = 135
-        Width = 145
-        Height = 23
-        DataField = 'RUA'
-        DataSource = DsCad
-        TabOrder = 7
-      end
-      object DBEditBairro: TDBEdit
-        Left = 81
-        Top = 164
-        Width = 145
-        Height = 23
-        DataField = 'BAIRRO'
-        DataSource = DsCad
-        TabOrder = 8
-      end
-      object DBEditCidade: TDBEdit
-        Left = 81
-        Top = 193
-        Width = 145
-        Height = 23
-        DataField = 'CIDADE'
-        DataSource = DsCad
-        TabOrder = 9
-      end
-      object DBEditEstado: TDBEdit
-        Left = 81
-        Top = 222
-        Width = 145
-        Height = 23
-        DataField = 'ESTADO'
-        DataSource = DsCad
-        TabOrder = 10
-        StyleName = 'Windows'
-      end
-      object EditValor: TEdit
-        Left = 81
-        Top = 251
-        Width = 145
-        Height = 23
-        Enabled = False
-        TabOrder = 11
-        Text = 'EditValor'
-        OnExit = EditValorExit
       end
     end
   end
@@ -307,12 +229,12 @@ inherited FormCadVenda: TFormCadVenda
     ExplicitTop = 522
     ExplicitWidth = 765
     inherited ButtonSalvar: TButton
-      Left = 687
-      ExplicitLeft = 687
+      Left = 684
+      ExplicitLeft = 684
     end
     inherited ButtonCancelar: TButton
-      Left = 599
-      ExplicitLeft = 599
+      Left = 596
+      ExplicitLeft = 596
     end
   end
   inherited DsCad: TDataSource

@@ -2,8 +2,8 @@ object FormCadVendaItem: TFormCadVendaItem
   Left = 0
   Top = 0
   Caption = 'Venda de item'
-  ClientHeight = 208
-  ClientWidth = 477
+  ClientHeight = 207
+  ClientWidth = 473
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,12 +14,12 @@ object FormCadVendaItem: TFormCadVendaItem
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 477
-    Height = 208
+    Width = 473
+    Height = 207
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 473
-    ExplicitHeight = 207
+    ExplicitWidth = 469
+    ExplicitHeight = 206
     object Label1: TLabel
       Left = 86
       Top = 27
@@ -53,7 +53,7 @@ object FormCadVendaItem: TFormCadVendaItem
       Top = 24
       Width = 45
       Height = 23
-      DataField = 'PRODUTO_ID'
+      DataField = 'CD_ITEM'
       DataSource = DataSource
       Enabled = False
       TabOrder = 2
@@ -63,7 +63,7 @@ object FormCadVendaItem: TFormCadVendaItem
       Top = 53
       Width = 121
       Height = 23
-      DataField = 'QUANTIDADE'
+      DataField = 'QT_ITEM'
       DataSource = DataSource
       TabOrder = 1
       OnExit = DBEditQuantidadeExit
@@ -78,15 +78,15 @@ object FormCadVendaItem: TFormCadVendaItem
     end
     object Panel2: TPanel
       Left = 1
-      Top = 174
-      Width = 475
+      Top = 173
+      Width = 471
       Height = 33
       Align = alBottom
       TabOrder = 3
-      ExplicitTop = 173
-      ExplicitWidth = 471
+      ExplicitTop = 172
+      ExplicitWidth = 467
       object ButtonCancelar: TButton
-        Left = 399
+        Left = 395
         Top = 1
         Width = 75
         Height = 31
@@ -95,22 +95,25 @@ object FormCadVendaItem: TFormCadVendaItem
         Caption = 'Confirmar'
         TabOrder = 0
         OnClick = ButtonCancelarClick
-        ExplicitLeft = 395
+        ExplicitLeft = 391
       end
     end
-    object EditValorUni: TEdit
-      Left = 116
-      Top = 82
-      Width = 121
-      Height = 23
-      TabOrder = 4
-      OnExit = EditValorUniExit
-    end
-    object EditValorTot: TEdit
+    object DbEditValorTot: TDBEdit
       Left = 116
       Top = 111
       Width = 121
       Height = 23
+      DataField = 'VL_TOTAL'
+      DataSource = DataSource
+      TabOrder = 4
+    end
+    object DBEditValorUni: TDBEdit
+      Left = 116
+      Top = 82
+      Width = 121
+      Height = 23
+      DataField = 'VL_UNITARIO'
+      DataSource = DataSource
       TabOrder = 5
     end
   end

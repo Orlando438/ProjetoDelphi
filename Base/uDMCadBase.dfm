@@ -14,17 +14,6 @@ object DMCadBase: TDMCadBase
     Left = 288
     Top = 88
   end
-  object Connection: TSQLConnection
-    LoadParamsOnConnect = True
-    LoginPrompt = False
-    Left = 424
-    Top = 264
-  end
-  object QueryCad: TSQLQuery
-    Params = <>
-    Left = 184
-    Top = 88
-  end
   object CdsCadItems: TClientDataSet
     Aggregates = <>
     Params = <>
@@ -37,14 +26,23 @@ object DMCadBase: TDMCadBase
     Left = 288
     Top = 160
   end
-  object QueryCadItems: TSQLQuery
-    Params = <>
-    Left = 184
-    Top = 160
-  end
   object DsCad: TDataSource
     DataSet = CdsCad
     Left = 88
     Top = 96
+  end
+  object Connection: TFDConnection
+    Left = 432
+    Top = 352
+  end
+  object QueryCad: TFDQuery
+    Connection = Connection
+    Left = 184
+    Top = 88
+  end
+  object QueryCadItems: TFDQuery
+    Connection = Connection
+    Left = 184
+    Top = 168
   end
 end

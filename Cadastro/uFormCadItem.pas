@@ -12,15 +12,15 @@ type
     Label3: TLabel;
     PanelSelecionar: TPanel;
     ButtonSelecionar: TButton;
-    EditPreco: TEdit;
+    DBEditPreco: TDBEdit;
+    DBEdit2: TDBEdit;
+    Label4: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
     procedure ButtonPesquisarClick(Sender: TObject);
     procedure ButtonSelecionarClick(Sender: TObject);
     procedure ButtonNovoClick(Sender: TObject);
     procedure DBGrid1DblClick(Sender: TObject);
-    procedure TabSheetCadastroShow(Sender: TObject);
-    procedure EditPrecoExit(Sender: TObject);
   private
     FItemSelecionado: Variant;
     FEmSelecao: Boolean;
@@ -45,13 +45,14 @@ var
 begin
   EditPesquisa.Text := Filtro;
   Pesquisar;
+  TFloatField(FDMCadBase.CdsCad.FieldByName('VL_VENDA')).DisplayFormat := '#,##0.00';
   SetVisualParaSelecao;
 
   if ShowModal = mrOk then
   begin
     Produto := TItemVenda.Create;
-    Produto.IDProduto := FDMCadBase.CdsCad.FieldByName('ID').AsInteger;
-    Produto.PrecoUnitario := FDMCadBase.CdsCad.FieldByName('PRECO').AsCurrency;
+    Produto.IDProduto := FDMCadBase.CdsCad.FieldByName('CD_ITEM').AsInteger;
+    Produto.PrecoUnitario := FDMCadBase.CdsCad.FieldByName('VL_VENDA').AsFloat;
     Result := Produto;
   end
   else
@@ -70,27 +71,19 @@ begin
   FEmSelecao := True;
 end;
 
-procedure TFormCadItem.TabSheetCadastroShow(Sender: TObject);
-var
-  AValor: Double;
-begin
-  inherited;
-  AValor := Dscad.DataSet.FieldByName('PRECO').AsFloat;
-  EditPreco.Text := FormatFloat('#,##0.00', AValor);;
-end;
-
 procedure TFormCadItem.ButtonNovoClick(Sender: TObject);
 begin
-  FDMCadbase.FGeradorNovoCod := 'GEN_PRODUTO_ID';
   FDMCadbase.Fconnection := FconnectionCad;
+  FDMCadbase.FCampoCodigo := 'CD_ITEM';
+  FGeradorNovoCod := 'item_seq';
   inherited;
-  EditPreco.Text := '0';
 end;
 
 procedure TFormCadItem.ButtonPesquisarClick(Sender: TObject);
 begin
   Pesquisar;
   inherited;
+  TFloatField(FDMCadBase.CdsCad.FieldByName('VL_VENDA')).DisplayFormat := '#,##0.00';
 end;
 
 procedure TFormCadItem.ButtonSelecionarClick(Sender: TObject);
@@ -113,26 +106,10 @@ end;
 procedure TFormCadItem.SetItemSelecionado;
 begin
   if not(FDMCadBase.CdsCad.IsEmpty) then
-    FItemSelecionado := FDMCadBase.CdsCad.FieldByName('ID').Value;
+    FItemSelecionado := FDMCadBase.CdsCad.FieldByName('CD_ITEM').Value;
 
   ModalResult := mrOk;
 end;
-
-procedure TFormCadItem.EditPrecoExit(Sender: TObject);
-var
-  AValor: Double;
-begin
-  inherited;
-  if DsCad.DataSet.IsEmpty then
-    Exit;
-
-  AValor := StrToFloat(EditPreco.Text);
-  EditPreco.Text := FormatFloat('#,##0.00', AValor);;
-
-  DsCad.DataSet.Edit;
-  DsCad.DataSet.FieldByName('PRECO').AsFloat := AValor;
-end;
-
 
 procedure TFormCadItem.EditPesquisaKeyPress(Sender: TObject; var Key: Char);
 begin
@@ -140,23 +117,24 @@ begin
     Pesquisar;
 
   inherited;
+  TFloatField(FDMCadBase.CdsCad.FieldByName('VL_VENDA')).DisplayFormat := '#,##0.00';
 end;
 
 procedure TFormCadItem.FormCreate(Sender: TObject);
 begin
   FEmSelecao := False;
-  FGeradorNovoCod := 'GEN_PRODUTO_ID';
   FSQL := 'SELECT *  ' +
-          '   FROM PRODUTO ';
+          '   FROM ITEM ';
   inherited;
+
+  TFloatField(FDMCadBase.CdsCad.FieldByName('VL_VENDA')).DisplayFormat := '#,##0.00';
 end;
 
 procedure TFormCadItem.Pesquisar;
 begin
   FFiltrosSQL := '';
-  adicionarfiltros('PRODUTO.ID');
-  adicionarfiltros('PRODUTO.NOME');
-  adicionarfiltros('PRODUTO.PRECO');
+  adicionarfiltros('ITEM.CD_ITEM');
+  adicionarfiltros('ITEM.DS_ITEM');
   FecharFiltro;
 end;
 
